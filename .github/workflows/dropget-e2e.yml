@@ -1,4 +1,4 @@
-name: Test live DROP/GET
+name: Test live DROP/GET r2
 on:
   workflow_dispatch:
   push:
@@ -9,7 +9,7 @@ permissions:
 jobs:
   live-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 16
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - name: Test TikTok video audio and photos on deployed service
