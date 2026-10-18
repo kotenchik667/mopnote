@@ -1,5 +1,5 @@
-const CACHE = 'mopnote-v4-glitch';
-const FILES = ['./', './index.html', './styles.css', './app.js', './engine.js', './glitch.css', './glitch.js', './icon.svg', './manifest.webmanifest'];
+const CACHE = 'mopnote-v5-business';
+const FILES = ['./', './index.html', './styles.css', './app.js', './engine.js', './glitch.css', './glitch.js', './operations.css', './operations.js', './risk.js', './guidance.js', './icon.svg', './manifest.webmanifest'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)).then(() => self.skipWaiting()));
 });
