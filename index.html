@@ -10,11 +10,14 @@
   <title>Mopnote — The cleaning quote desk</title>
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="stylesheet" href="./styles.css?v=3">
+  <link rel="stylesheet" href="./styles.css?v=4">
+  <link rel="stylesheet" href="./glitch.css?v=4">
   <script src="./engine.js?v=3" defer></script>
   <script src="./app.js?v=3" defer></script>
+  <script src="./glitch.js?v=4" defer></script>
 </head>
 <body>
+<canvas id="glitchCanvas" aria-hidden="true"></canvas>
 <a class="skip" href="#workspace">Skip to the calculator</a>
 <div class="notice-line"><div class="frame"><span>INDEPENDENT TOOLS FOR WORKING CLEANERS</span><span>NO ACCOUNT · NO SUBSCRIPTION · YOUR NUMBERS</span></div></div>
 <header class="site-header" id="home">
@@ -23,6 +26,7 @@
     <div class="header-descriptor">ESTIMATE<br>WORKSTATION</div>
     <div class="header-actions">
       <a href="#workspace" id="navAction" class="header-link">OPEN THE DESK <span aria-hidden="true">↗</span></a>
+      <button type="button" id="glitchToggle" class="glitch-toggle" aria-label="Pause background glitch animation" aria-pressed="true"><span class="glitch-indicator" aria-hidden="true">▤</span><span id="glitchLabel">GLITCH ON</span></button>
       <button type="button" id="themeToggle" class="theme-button" aria-label="Switch to dark mode" aria-pressed="false"><span aria-hidden="true">◐</span><span class="theme-text">DISPLAY</span></button>
     </div>
   </div>
