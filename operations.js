@@ -62,8 +62,7 @@
     entry.append(head, answer, source);
     results.append(entry);
   }
-  $('guideForm').addEventListener('submit', event => {
-    event.preventDefault();
+  function searchGuidance() {
     const question = $('guideQuery').value.trim();
     const hits = G.retrieve(question, 3);
     results.replaceChildren();
@@ -75,7 +74,9 @@
     } else {
       for (const hit of hits) addResult(hit);
     }
-  });
+  }
+  $('guideForm').querySelector('button').addEventListener('click', searchGuidance);
+  $('guideQuery').addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); searchGuidance(); } });
   document.addEventListener('input', event => {
     if (event.target.matches('[data-cfg], #beds, #baths, #sqft, #scope, #service, #condition, #frequency')) update();
   });
