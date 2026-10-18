@@ -6,9 +6,9 @@ from datetime import datetime, timezone
 
 BASE = "https://dropget.onrender.com"
 CASES = [
-    ("tiktok_video", "video", "https://www.tiktok.com/@s_arira_s/video/7509275887561346350"),
-    ("tiktok_audio", "audio", "https://www.tiktok.com/@s_arira_s/video/7509275887561346350"),
-    ("tiktok_photos", "photos", "https://www.tiktok.com/@imluca66/photo/7617926459105070358"),
+    ("youtube_video", "video", "https://www.youtube.com/shorts/hDs3lKzpTto"),
+    ("instagram_video", "video", "https://www.instagram.com/reel/DZzPabEJ8Pf/"),
+    ("instagram_photos", "photos", "https://www.instagram.com/p/DV_k-0SiCdr/"),
 ]
 
 def call(path, data=None):
@@ -38,7 +38,11 @@ def verify_file(job_id, mode):
     except urllib.error.HTTPError as exc:
         raise RuntimeError(f"Download HTTP {exc.code}: {exc.read(350).decode('utf-8','replace')}")
 
-report = {"checked_at": datetime.now(timezone.utc).isoformat(), "site": BASE, "cases": {}}
+from pathlib import Path
+report_file = Path("dropget/live-test-report.json")
+report = json.loads(report_file.read_text()) if report_file.exists() else {"site": BASE, "cases": {}}
+report["checked_at"] = datetime.now(timezone.utc).isoformat()
+report["site"] = BASE
 try:
     report["health"] = call("/api/health")
 except Exception as exc:
