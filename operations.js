@@ -46,8 +46,6 @@
     });
     field.addEventListener('blur', () => { field.value = String(settings[field.dataset.risk]); });
   }
-  const note = document.createElement('span');
-  note.textContent = '';
   const results = $('guideResults');
   function addResult(doc) {
     const entry = document.createElement('article');
@@ -84,8 +82,8 @@
   document.addEventListener('change', event => {
     if (event.target.matches('[data-extra], [data-cfg], #beds, #baths, #sqft, #scope, #service, #condition, #frequency')) update();
   });
-  const originalRefresh = $('quoteTab');
-  originalRefresh.addEventListener('click', update);
+  document.addEventListener('mopnote:quote-updated', update);
+  $('quoteTab').addEventListener('click', update);
   $('studioTab').addEventListener('click', update);
   update();
 })();
