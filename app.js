@@ -88,6 +88,13 @@
       : 'No WhatsApp number is configured. Copy your estimate and contact the business directly. This is not a booking.';
     if (badLink) setStatus('quoteStatus', 'That customer link could not be opened. Request a new link from the business.');
     $('businessMetrics').hidden = customer || $('studioPanel').hidden;
+    document.dispatchEvent(new Event('mopnote:quote-updated'));
+    const shownPrice = $('price');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      shownPrice.classList.remove('quote-pulse');
+      void shownPrice.offsetWidth;
+      shownPrice.classList.add('quote-pulse');
+    }
     document.title = customer ? (r.config.business || 'Cleaning') + ' | Mopnote estimate' : 'Mopnote — turn an enquiry into a clear estimate';
   }
   function changeMode(mode, scroll) {
@@ -153,14 +160,18 @@
     const phone = last.config.phone;
     if (!validPhone(phone)) { setStatus('quoteStatus', 'Add a valid WhatsApp number in Business studio first.'); return; }
     const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(buildMessage());
-    window.open(url, '_blank', 'noopener,noreferrer');
-    setStatus('quoteStatus', 'WhatsApp opened with your quote details. Sending the message is your choice.');
+    const opened = window.open(url, '_blank', 'noopener,noreferrer');
+    setStatus('quoteStatus', opened ? 'WhatsApp opened. Sending the message is your choice.' : 'WhatsApp handoff requested. If nothing opened, check pop-up blocking or copy the estimate.');
   });
   $('copyBtn').addEventListener('click', async () => {
     setStatus('quoteStatus', await copyText(buildMessage()) ? 'Estimate copied.' : 'Copy failed. Please try another browser.');
   });
   $('printBtn').addEventListener('click', () => window.print());
   $('shareBtn').addEventListener('click', async () => {
+    if (!validPhone(config.phone) && !E.safeUrl(config.booking)) {
+      setStatus('studioStatus', 'Add a valid WhatsApp number or HTTPS booking link before sharing. Otherwise customers cannot contact you.');
+      return;
+    }
     const url = linkForCustomers();
     const ok = await copyText(url);
     setStatus('studioStatus', ok
@@ -168,6 +179,10 @@
       : 'Could not copy. Please open this page on HTTPS and try again.');
   });
   $('embedBtn').addEventListener('click', async () => {
+    if (!validPhone(config.phone) && !E.safeUrl(config.booking)) {
+      setStatus('studioStatus', 'Set up WhatsApp or an HTTPS booking page before embedding.');
+      return;
+    }
     const url = linkForCustomers().replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     const code = '<iframe src="' + url + '" title="Cleaning estimate" loading="lazy" style="width:100%;min-height:950px;border:0;border-radius:18px"></iframe>';
     setStatus('studioStatus', await copyText(code) ? 'Embed code copied. Paste it into a page that supports HTML.' : 'Could not copy the embed code.');

@@ -14,5 +14,17 @@ jobs:
       - run: node --check engine.js
       - run: node --check app.js
       - run: node --check glitch.js
+      - run: node --check risk.js
+      - run: node --check guidance.js
+      - run: node --check operations.js
       - run: node --check sw.js
       - run: node --test tests/*.test.cjs
+      - run: npm install --no-save playwright@1.57.0
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/browser.e2e.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mopnote-browser-screenshots
+          path: test-artifacts/
+          if-no-files-found: ignore

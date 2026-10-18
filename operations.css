@@ -1,0 +1,65 @@
+.operations-panel{border-top:2px solid var(--ink);padding:32px 34px 42px;background:var(--paper)}
+.ops-header .tiny-label,.guidance-panel .tiny-label{color:var(--accent)}
+.ops-header h4{font:900 clamp(26px,2.8vw,36px)/1 var(--font);letter-spacing:-.07em;margin:13px 0}
+.ops-header p,.guidance-panel p{font-size:13px;color:var(--softink);max-width:630px}
+.ops-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 20px;margin-top:27px}
+.ops-results{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);margin-top:34px}
+.ops-results>div{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:13px 0;border-bottom:1px solid var(--fine)}
+.ops-results>div:last-child{border:0}
+.ops-results span{font:800 10px/1.4 var(--mono);max-width:67%;color:var(--softink)}
+.ops-results strong{font:900 17px/1.1 var(--mono);font-variant-numeric:tabular-nums;text-align:right;overflow-wrap:anywhere}
+.ops-warning{color:var(--accent);font:800 11px/1.5 var(--mono);min-height:20px;margin:17px 0 0}
+.ops-foot{font-size:11px;color:var(--softink);line-height:1.6;margin:14px 0 0}
+.guidance-panel{margin-top:40px;padding-top:26px;border-top:1px solid var(--ink)}
+.guidance-panel h4{font-size:28px;letter-spacing:-.055em;margin:10px 0}
+.guide-form{display:flex;gap:15px;align-items:end}
+.guide-form .field{flex:1}
+.guide-form .flat-button{white-space:nowrap;margin-bottom:0}
+.guide-results{margin-top:18px}
+.guide-result{padding:18px 0;border-top:1px solid var(--fine)}
+.guide-result strong{display:block;font-size:15px;line-height:1.35;letter-spacing:-.03em}
+.guide-result p{margin:9px 0;font-size:12px}
+.guide-result a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;font:800 10px var(--mono)}
+.guide-empty{color:var(--softink);font-size:12px;padding:20px 0}
+.setup-readiness{margin:5px 34px 27px;border-top:1px solid var(--fine);padding-top:14px;font:700 11px/1.5 var(--mono);color:var(--softink)}
+.setup-readiness strong{color:var(--accent)}
+.intro h1{position:relative;animation:signal-type 8.4s steps(1,end) infinite}
+.intro h1::after{content:"";position:absolute;left:0;top:50%;width:clamp(44px,6vw,95px);height:3px;background:var(--accent);opacity:0;pointer-events:none;animation:type-break 6.1s steps(1,end) infinite}
+.desk-rule{transform-origin:center bottom;animation:desk-signal 3.1s ease-in-out infinite}
+.index-mark{animation:registration-bar 4.3s steps(1,end) infinite}
+.receipt-top strong{animation:receipt-jitter 9.5s steps(1,end) infinite}
+.receipt-price{animation:ink-breathe 7.2s ease-in-out infinite}
+.tab.active{position:relative}
+.tab.active::after{content:"";position:absolute;bottom:0;left:0;height:3px;background:var(--accent);animation:signal-progress 5s linear infinite}
+.work-grid{position:relative}
+.work-grid::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--accent);opacity:.45;pointer-events:none;animation:edge-signal 8s linear infinite}
+.flat-button:not(:disabled){transition:background-color .17s linear,color .17s linear,translate .17s ease}
+.flat-button:hover:not(:disabled){translate:2px -1px}
+.receipt-price.quote-pulse{animation:quote-flash .44s steps(2,end) 1}
+@keyframes type-break{0%,17%,17.4%,60%,60.6%,91%,91.5%,100%{opacity:0;translate:0 0}17.2%,60.3%,91.2%{opacity:.7;translate:40vw -7px}}
+@keyframes signal-type{0%,22%,22.3%,23%,65%,65.3%,100%{text-shadow:none}22.1%,65.1%{text-shadow:2px 0 var(--accent),-2px 0 color-mix(in srgb,var(--ink) 45%,transparent)}}
+@keyframes registration-bar{0%,19%,21%,42%,44%,82%,84%,100%{transform:translateX(0)}20%,43%{transform:translateX(8px)}83%{transform:translateX(-4px)}}
+@keyframes desk-signal{0%,100%{scale:1 1}50%{scale:1 1.23}}
+@keyframes receipt-jitter{0%,32%,32.4%,66%,66.3%,100%{translate:0 0}32.2%{translate:2px 0}66.2%{translate:-2px 0}}
+@keyframes ink-breathe{0%,100%{opacity:1}50%{opacity:.83}}
+@keyframes signal-progress{from{width:0}to{width:100%}}
+@keyframes edge-signal{0%,100%{opacity:.08;transform:scaleY(.1)}50%{opacity:.7;transform:scaleY(.95)}}
+@keyframes quote-flash{0%,100%{color:var(--ink)}50%{color:var(--accent)}}
+@media(max-width:1150px){.operations-panel{padding-inline:22px}}
+@media(max-width:870px){.operations-panel{padding-inline:29px}}
+@media(max-width:610px){
+ .operations-panel{padding:30px 15px}
+ .ops-fields{gap:18px 14px}
+ .guide-form{align-items:stretch;flex-direction:column;gap:13px}
+ .guide-form .field,.guide-form button{width:100%}
+ .guide-form button{min-height:45px}
+ .ops-results span{font-size:9px}
+ .ops-results strong{font-size:14px}
+ .setup-readiness{margin-inline:15px}
+}
+@media(max-width:380px){.ops-fields{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){
+ .intro h1,.intro h1::after,.desk-rule,.index-mark,.receipt-top strong,.receipt-price,.tab.active::after,.work-grid::before{animation:none!important}
+ .flat-button{transition:none!important}
+}
+@media print{.operations-panel,.setup-readiness{display:none!important}}
