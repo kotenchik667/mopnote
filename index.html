@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#10241f">
-  <meta name="description" content="Mopnote turns your cleaning prices into a beautiful, shareable quote calculator. No account required.">
-  <meta property="og:title" content="Mopnote — the easier way to quote cleaning jobs">
-  <meta property="og:description" content="Your rates. A customer-ready quote page. Less back-and-forth.">
-  <meta name="color-scheme" content="light dark">
-  <title>Mopnote — turn an enquiry into a clear estimate</title>
+  <meta name="theme-color" content="#e9e7e1">
+  <meta name="description" content="The practical cleaning quote desk. Set your own rates, calculate an estimate, share one link.">
+  <meta property="og:title" content="Mopnote / The cleaning quote desk">
+  <meta property="og:description" content="A simpler way to work out the price before the first message.">
+  <title>Mopnote — The cleaning quote desk</title>
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css">
@@ -16,166 +15,163 @@
   <script src="./app.js" defer></script>
 </head>
 <body>
-  <a class="skip" href="#workspace">Skip to quote tool</a>
-  <header class="topbar">
-    <div class="shell nav">
-      <a href="./" class="logo" aria-label="Mopnote home"><span class="logo-symbol" aria-hidden="true">m<span>·</span></span>mopnote<span class="logo-stop">.</span></a>
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#how">How it works</a>
-        <a href="#why">Why Mopnote</a>
-        <a class="nav-pill" href="#workspace" id="navAction">Open studio <span aria-hidden="true">↗</span></a>
-      </nav>
-      <button type="button" class="icon-button theme-button" id="themeToggle" aria-label="Switch to dark mode" aria-pressed="false"><span aria-hidden="true">◐</span></button>
+<a class="skip" href="#workspace">Skip to the calculator</a>
+<div class="notice-line"><div class="frame"><span>INDEPENDENT TOOLS FOR WORKING CLEANERS</span><span>NO ACCOUNT · NO SUBSCRIPTION · YOUR NUMBERS</span></div></div>
+<header class="site-header" id="home">
+  <div class="frame header-grid">
+    <a href="./" class="wordmark" aria-label="Mopnote home">mopnote<span>.</span></a>
+    <div class="header-descriptor">ESTIMATE<br>WORKSTATION</div>
+    <div class="header-actions">
+      <a href="#workspace" id="navAction" class="header-link">OPEN THE DESK <span aria-hidden="true">↗</span></a>
+      <button type="button" id="themeToggle" class="theme-button" aria-label="Switch to dark mode" aria-pressed="false"><span aria-hidden="true">◐</span><span class="theme-text">DISPLAY</span></button>
     </div>
-  </header>
-
-  <main>
-    <section class="hero shell" id="home">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="signal-dot"></span> THE LITTLE TOOL FOR CLEANING BUSINESSES</div>
-        <h1>Less quoting.<br><em>More cleaning.</em></h1>
-        <p class="hero-lede">Stop typing the same prices into messages. Build your own instant estimate page, send one link, and let customers come to you with the details.</p>
-        <div class="hero-ctas">
-          <a href="#workspace" class="btn btn-primary" id="heroAction">Build my quote page <span aria-hidden="true">↗</span></a>
-          <button class="btn btn-quiet" type="button" id="demoAction">Try the customer view <span aria-hidden="true">→</span></button>
-        </div>
-        <p class="micro-proof"><span aria-hidden="true">✳</span> No signup &nbsp;·&nbsp; Runs in your browser &nbsp;·&nbsp; Works on any screen</p>
-      </div>
-      <div class="hero-art" aria-label="Preview of an estimate">
-        <div class="art-grid" aria-hidden="true"></div>
-        <div class="floating-tag tag-left"><span class="tiny-star">✳</span> YOUR PRICES, YOUR RULES</div>
-        <div class="preview-window">
-          <div class="preview-top"><span><span class="preview-orb"></span> LIVE ESTIMATE</span><span>01 / 03</span></div>
-          <div class="preview-copy">Your next clean,<br>clearly priced.</div>
-          <div class="preview-chips"><span>2 bedrooms</span><span>1 bathroom</span><span>Regular</span></div>
-          <div class="preview-total"><div><small>ESTIMATED TOTAL</small><strong id="heroPrice">$153–$195</strong></div><span class="preview-arrow" aria-hidden="true">↗</span></div>
-          <div class="preview-foot"><span>Ready to send, not a final booking.</span><span>mopnote.</span></div>
-        </div>
-        <div class="floating-tag tag-right">FROM QUESTION TO QUOTE <span aria-hidden="true">↗</span></div>
-      </div>
-    </section>
-
-    <div class="trust-strip" aria-label="Benefits">
-      <div class="shell trust-items"><span>YOUR BRAND</span><span class="asterisk">✳</span><span>FLEXIBLE PRICING</span><span class="asterisk">✳</span><span>INSTANT QUOTES</span><span class="asterisk">✳</span><span>ONE SHAREABLE LINK</span></div>
+  </div>
+</header>
+<main>
+  <section class="intro frame">
+    <div class="intro-main"><div class="eyeline"><span class="index-mark"></span> THE QUOTE DESK / MOPNOTE V3</div>
+      <h1>Know the job.<br><span>Know the price.</span></h1>
     </div>
-
-    <section class="tool-area" id="workspace">
-      <div class="shell">
-        <div class="tool-heading">
-          <div><span class="section-label">01 / THE TOOL</span><h2>From estimate<br>to enquiry.</h2><p>Set it up once. Let the numbers do the work.</p></div>
-          <div class="mode-switch" role="group" aria-label="Choose work area"><button type="button" class="mode-btn active" id="quoteTab" aria-pressed="true">Customer quote</button><button type="button" class="mode-btn" id="studioTab" aria-pressed="false">Business studio <span class="mode-dot"></span></button></div>
-        </div>
-
-        <div class="workspace-grid">
-          <div class="work-surface">
-            <div id="quotePanel">
-              <div class="surface-header"><span class="surface-icon" aria-hidden="true">✳</span><div><span class="overline">INSTANT ESTIMATE</span><h3 id="formTitle">Tell us about your space.</h3></div><span class="step-badge">01—03</span></div>
-              <div class="form-section"><div class="step"><span>01</span><div class="step-body"><h4>The space</h4><p>A few details help us get the quote right.</p>
-                <div class="field-grid">
-                  <label class="field">Bedrooms <input id="beds" type="number" inputmode="numeric" min="0" max="30" step="1" value="2"></label>
-                  <label class="field">Bathrooms <input id="baths" type="number" inputmode="numeric" min="0" max="30" step="1" value="1"></label>
-                  <label class="field">Floor area <small>(optional, sq ft)</small><input id="sqft" type="number" inputmode="numeric" min="0" max="100000" step="50" placeholder="e.g. 1200"></label>
-                  <label class="field">Scope <select id="scope"><option value="selected">Selected rooms only</option><option value="whole">Whole home</option></select></label>
+    <div class="intro-aside"><span class="intro-number">M/N—01</span><p>No chasing down details. No mystery pricing. Your own estimate sheet, ready to share in a minute.</p>
+      <div class="intro-buttons"><a href="#workspace" id="heroAction" class="flat-button primary-button">SET UP YOUR PRICES <span aria-hidden="true">↗</span></a><button type="button" id="demoAction" class="under-button">PREVIEW AS CUSTOMER →</button></div>
+      <span class="visually-hidden" id="heroPrice"></span>
+    </div>
+  </section>
+  <section class="workspace" id="workspace" aria-labelledby="workspaceTitle">
+    <div class="frame">
+      <div class="desk-bar">
+        <div class="desk-title"><span class="desk-rule"></span><div><div class="tiny-label">ACTIVE WORKSPACE</div><h2 id="workspaceTitle">The estimate desk<span class="period">.</span></h2></div></div>
+        <div class="desk-caption">ONE TOOL. TWO SIDES. <span>STUDIO / CUSTOMER</span></div>
+      </div>
+      <div class="tab-bar" role="group" aria-label="Workspace view">
+        <button type="button" id="quoteTab" class="tab" aria-pressed="false"><span class="tab-count">A</span> CUSTOMER ESTIMATE <span class="tab-arrow">↗</span></button>
+        <button type="button" id="studioTab" class="tab active" aria-pressed="true"><span class="tab-count">B</span> BUSINESS SETTINGS <span class="tab-arrow">↗</span></button>
+        <span class="bar-filler">ALL CHANGES CALCULATED IN REAL TIME</span>
+      </div>
+      <div class="work-grid">
+        <div class="work-main">
+          <div id="quotePanel" hidden>
+            <div class="panel-title"><div><div class="tiny-label">THE JOB</div><h3 id="formTitle">Tell us about your space.</h3><p>Fill in the facts. Get a clear estimated range.</p></div><span class="panel-serial">MN / Q-001</span></div>
+            <section class="form-block">
+              <div class="block-aside"><span class="block-letter">A</span><h4>Property</h4><p>Rooms and size.</p></div>
+              <div class="block-inputs"><div class="field-grid">
+                <label class="field">Bedrooms <input id="beds" type="number" inputmode="numeric" min="0" max="30" step="1" value="2"></label>
+                <label class="field">Bathrooms <input id="baths" type="number" inputmode="numeric" min="0" max="30" step="1" value="1"></label>
+                <label class="field">Floor area <small>— optional, sq ft</small><input id="sqft" type="number" inputmode="numeric" min="0" max="100000" step="50" placeholder="e.g. 1200"></label>
+                <label class="field">What needs cleaning?<select id="scope"><option value="selected">Selected rooms only</option><option value="whole">The whole home</option></select></label>
+              </div><p class="field-help">Whole-home estimates use floor area to check the minimum size-based charge.</p></div>
+            </section>
+            <section class="form-block">
+              <div class="block-aside"><span class="block-letter">B</span><h4>Service</h4><p>Type and condition.</p></div>
+              <div class="block-inputs"><div class="field-grid">
+                <label class="field">Cleaning type<select id="service"><option value="regular">Standard clean</option><option value="deep">Deep clean</option><option value="moving">Move-in / move-out</option></select></label>
+                <label class="field">Current condition<select id="condition"><option value="normal">Generally maintained</option><option value="moderate">Needs extra attention</option><option value="heavy">Heavy buildup</option></select></label>
+                <label class="field full">How often?<select id="frequency"><option value="once">Just this once</option><option value="weekly">Every week</option><option value="biweekly">Every two weeks</option><option value="monthly">Once a month</option></select></label>
+              </div><p class="field-help" id="frequencyNote">Recurring discounts are estimates for future standard visits.</p></div>
+            </section>
+            <section class="form-block">
+              <div class="block-aside"><span class="block-letter">C</span><h4>Extra work</h4><p>Select only what you need.</p></div>
+              <div class="block-inputs">
+                <div class="checks">
+                  <label class="check-line"><input type="checkbox" data-extra="kitchen" checked><span>Kitchen<small>Worktop &amp; sink</small></span><span class="check-symbol">＋</span></label>
+                  <label class="check-line"><input type="checkbox" data-extra="living" checked><span>Living room<small>Shared living space</small></span><span class="check-symbol">＋</span></label>
+                  <label class="check-line"><input type="checkbox" data-extra="oven"><span>Inside oven<small>Appliance extra</small></span><span class="check-symbol">＋</span></label>
+                  <label class="check-line"><input type="checkbox" data-extra="fridge"><span>Inside fridge<small>Appliance extra</small></span><span class="check-symbol">＋</span></label>
+                  <label class="check-line"><input type="checkbox" data-extra="windows"><span>Inside windows<small>Glass surfaces</small></span><span class="check-symbol">＋</span></label>
+                  <label class="check-line"><input type="checkbox" data-extra="pets"><span>Pet hair<small>Extra attention</small></span><span class="check-symbol">＋</span></label>
                 </div>
-                <p class="hint">For whole-home jobs, floor area helps check that the room estimate isn't too low.</p>
-              </div></div></div>
-              <div class="form-section"><div class="step"><span>02</span><div class="step-body"><h4>The kind of clean</h4><p>Choose the work and how often you need it.</p>
-                <div class="field-grid">
-                  <label class="field">Service <select id="service"><option value="regular">Standard cleaning</option><option value="deep">Deep cleaning</option><option value="moving">Move-in / move-out</option></select></label>
-                  <label class="field">Current condition <select id="condition"><option value="normal">Generally maintained</option><option value="moderate">Needs extra attention</option><option value="heavy">Heavy buildup</option></select></label>
-                  <label class="field wide">Frequency <select id="frequency"><option value="once">One-time visit</option><option value="weekly">Every week</option><option value="biweekly">Every two weeks</option><option value="monthly">Every month</option></select></label>
-                </div><p class="hint" id="frequencyNote">Recurring discounts are estimates per future standard visit. The first clean may cost more.</p>
-              </div></div></div>
-              <div class="form-section"><div class="step"><span>03</span><div class="step-body"><h4>Pick the extras</h4><p>Only pay for the areas and add-ons you actually need.</p>
-                <div class="option-grid">
-                  <label class="check-card"><input type="checkbox" data-extra="kitchen" checked><span>Kitchen</span><small id="kitchenTag">Included in total</small></label>
-                  <label class="check-card"><input type="checkbox" data-extra="living" checked><span>Living room</span><small>Common area</small></label>
-                  <label class="check-card"><input type="checkbox" data-extra="oven"><span>Inside oven</span><small>Add-on</small></label>
-                  <label class="check-card"><input type="checkbox" data-extra="fridge"><span>Inside fridge</span><small>Add-on</small></label>
-                  <label class="check-card"><input type="checkbox" data-extra="windows"><span>Interior windows</span><small>Add-on</small></label>
-                  <label class="check-card"><input type="checkbox" data-extra="pets"><span>Pet hair</span><small>Extra care</small></label>
-                </div>
-              </div></div></div>
-              <div class="contact-form"><span class="overline">READY WHEN YOU ARE</span><h4>Make it yours.</h4><p>These details go into your message to the cleaner. Nothing is uploaded to Mopnote.</p>
-                <div class="field-grid"><label class="field">Your name <small>(optional)</small><input id="clientName" type="text" maxlength="70" autocomplete="name" placeholder="Your name"></label><label class="field">Preferred date <small>(optional)</small><input id="preferredDate" type="date"></label><label class="field wide">Postcode / area <small>(optional)</small><input id="clientArea" type="text" maxlength="80" autocomplete="postal-code" placeholder="Where's the property?"></label><label class="field wide">Anything we should know? <small>(optional)</small><textarea id="clientNotes" rows="3" maxlength="500" placeholder="Access, priorities, unusual buildup..."></textarea></label></div>
               </div>
-            </div>
-
-            <div id="studioPanel" hidden>
-              <div class="surface-header"><span class="surface-icon studio-icon" aria-hidden="true">↗</span><div><span class="overline">BUSINESS STUDIO</span><h3>Make every quote yours.</h3></div><span class="step-badge">SETUP</span></div>
-              <div class="studio-intro">No accounts or backend. Your setup is saved in this browser; the customer link contains the public pricing settings. Don't put secrets in your configuration.</div>
-              <form id="studioForm">
-                <div class="studio-group"><div class="group-heading"><span>01</span><div><h4>Your business</h4><p>What customers see when they open your link.</p></div></div><div class="field-grid">
-                  <label class="field">Business name <input data-cfg="business" type="text" maxlength="70"></label>
-                  <label class="field">WhatsApp with country code <input data-cfg="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="15551234567"></label>
-                  <label class="field">Currency symbol <input data-cfg="currency" type="text" maxlength="4"></label>
-                  <label class="field">Booking page <small>(optional, https://)</small><input data-cfg="booking" type="url" placeholder="https://your-booking-site.com"></label>
-                </div></div>
-                <div class="studio-group"><div class="group-heading"><span>02</span><div><h4>Your base rates</h4><p>Control the minimum and every cleaning area.</p></div></div><div class="field-grid" id="baseFields">
-                  <label class="field">Minimum charge <input data-cfg="minimum" type="number" min="0" step="1"></label>
-                  <label class="field">Per bedroom <input data-cfg="bedroom" type="number" min="0" step="1"></label>
-                  <label class="field">Per bathroom <input data-cfg="bathroom" type="number" min="0" step="1"></label>
-                  <label class="field">Whole-home floor, per 100 sq ft <input data-cfg="per100" type="number" min="0" step="1"></label>
-                  <label class="field">Kitchen <input data-cfg="kitchen" type="number" min="0" step="1"></label>
-                  <label class="field">Living room <input data-cfg="living" type="number" min="0" step="1"></label>
-                  <label class="field">Inside oven <input data-cfg="oven" type="number" min="0" step="1"></label>
-                  <label class="field">Inside fridge <input data-cfg="fridge" type="number" min="0" step="1"></label>
-                  <label class="field">Interior windows <input data-cfg="windows" type="number" min="0" step="1"></label>
-                  <label class="field">Pet hair <input data-cfg="pets" type="number" min="0" step="1"></label>
-                </div></div>
-                <details class="advanced" open><summary><span><strong>Advanced pricing engine</strong><small>Condition, recurrence, tax and profit checks</small></span><span class="plus" aria-hidden="true">+</span></summary>
-                  <div class="studio-group"><div class="group-heading"><span>03</span><div><h4>Smart adjustments</h4><p>Multipliers such as 1.4 mean 40% more.</p></div></div><div class="field-grid">
-                    <label class="field">Deep clean multiplier <input data-cfg="deep" type="number" min="1" max="8" step="0.05"></label>
-                    <label class="field">Move-out multiplier <input data-cfg="moving" type="number" min="1" max="8" step="0.05"></label>
-                    <label class="field">Moderate condition multiplier <input data-cfg="moderate" type="number" min="1" max="8" step="0.05"></label>
-                    <label class="field">Heavy condition multiplier <input data-cfg="heavy" type="number" min="1" max="8" step="0.05"></label>
-                    <label class="field">Weekly discount (%) <input data-cfg="weekly" type="number" min="0" max="70" step="1"></label>
-                    <label class="field">Fortnightly discount (%) <input data-cfg="biweekly" type="number" min="0" max="70" step="1"></label>
-                    <label class="field">Monthly discount (%) <input data-cfg="monthly" type="number" min="0" max="70" step="1"></label>
-                    <label class="field">Estimate variance (±%) <input data-cfg="variance" type="number" min="0" max="40" step="1"></label>
-                    <label class="field">Travel / setup fee <input data-cfg="travel" type="number" min="0" step="1"></label>
-                    <label class="field">Sales tax (%) <input data-cfg="tax" type="number" min="0" max="40" step="0.5"></label>
-                    <label class="field">Labor cost per cleaner-hour <input data-cfg="labor" type="number" min="0" step="1"></label>
-                    <label class="field">Cleaners on the job <input data-cfg="crew" type="number" min="1" max="20" step="1"></label>
-                  </div></div>
-                </details>
-                <div class="studio-actions"><button class="btn btn-primary" type="button" id="shareBtn">Copy customer link <span aria-hidden="true">↗</span></button><button class="btn btn-outline" type="button" id="embedBtn">Copy embed code</button><button class="btn btn-outline" type="button" id="downloadBtn">Export setup</button><button class="text-link" type="button" id="resetBtn">Reset to defaults</button></div>
-                <p class="feedback" id="studioStatus" role="status" aria-live="polite"></p>
-              </form>
-            </div>
+            </section>
+            <section class="form-block last">
+              <div class="block-aside"><span class="block-letter">D</span><h4>Contact</h4><p>Optional details for the cleaner.</p></div>
+              <div class="block-inputs"><div class="field-grid">
+                <label class="field">Your name <small>— optional</small><input id="clientName" type="text" maxlength="70" autocomplete="name" placeholder="Name"></label>
+                <label class="field">Preferred date <small>— optional</small><input id="preferredDate" type="date"></label>
+                <label class="field full">Postcode or area <small>— optional</small><input id="clientArea" type="text" maxlength="80" autocomplete="postal-code" placeholder="Where is the property?"></label>
+                <label class="field full">Job notes <small>— optional</small><textarea id="clientNotes" rows="3" maxlength="500" placeholder="Any priorities or access details?"></textarea></label>
+              </div><p class="field-help">Your details stay in this browser until you choose to share them.</p></div>
+            </section>
           </div>
-
-          <aside class="result-card" id="resultCard" aria-labelledby="resultHeading">
-            <div class="result-top"><span class="result-led"><span class="pulse"></span> LIVE CALCULATION</span><span class="result-num">M / 001</span></div>
-            <h3 id="resultHeading">Your estimated<br>cleaning price.</h3>
-            <p class="result-business" id="quoteBusiness">Prepared for your cleaning business</p>
-            <div class="amount" id="price" aria-live="polite" aria-atomic="true">$0–$0</div>
-            <div class="pervisit" id="visitCaption">Estimated price for one visit</div>
-            <div class="result-divider"></div>
-            <div class="estimate-row"><span>Approx. crew time</span><strong id="duration">—</strong></div>
-            <div class="estimate-row"><span>Service</span><strong id="resultService">Standard</strong></div>
-            <div class="estimate-row"><span>Included areas</span><strong id="roomCount">—</strong></div>
-            <details class="breakdown"><summary>See estimate breakdown <span aria-hidden="true">⌄</span></summary><div class="breakdown-list" id="breakdown"></div></details>
-            <div class="business-metrics" id="businessMetrics"><span class="overline">PRIVATE PRICING CHECK</span><div class="estimate-row"><span>Est. labor cost</span><strong id="laborCost">—</strong></div><div class="estimate-row"><span>Est. after labor, before other costs/tax</span><strong id="remainder">—</strong></div><p>Planning estimates only. Not net profit; supplies, travel, overhead and actual labor may differ.</p></div>
-            <div class="result-divider"></div>
-            <button type="button" class="btn btn-lime" id="sendBtn">Ask about availability <span aria-hidden="true">↗</span></button>
-            <a href="#" class="btn btn-outline result-book" id="bookBtn" target="_blank" rel="noopener noreferrer" hidden>Open booking page <span aria-hidden="true">↗</span></a>
-            <div class="result-secondary"><button type="button" id="copyBtn">Copy estimate <span aria-hidden="true">⧉</span></button><button type="button" id="printBtn">Print / save PDF <span aria-hidden="true">↗</span></button></div>
-            <p class="result-disclaimer" id="disclaimer">Indicative range only. The cleaning business confirms the final price and availability.</p>
-            <p class="feedback" id="quoteStatus" role="status" aria-live="polite"></p>
-          </aside>
+          <div id="studioPanel">
+            <div class="panel-title"><div><div class="tiny-label">BUSINESS CONTROL</div><h3>Set the rules.<br>Send the link.</h3><p>One setup for repeat enquiries. The customer-facing view uses these prices.</p></div><span class="panel-serial">MN / S-001</span></div>
+            <div class="data-notice"><strong>LOCAL BY DESIGN</strong><p>Settings stay in this browser. Customer links include your public prices — never include secrets. Changes require a fresh share link.</p></div>
+            <form id="studioForm">
+              <section class="form-block">
+                <div class="block-aside"><span class="block-letter">A</span><h4>Identity</h4><p>What customers see.</p></div>
+                <div class="block-inputs"><div class="field-grid">
+                  <label class="field">Business name<input data-cfg="business" type="text" maxlength="70"></label>
+                  <label class="field">WhatsApp number <small>— country code</small><input data-cfg="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="15551234567"></label>
+                  <label class="field">Currency symbol<input data-cfg="currency" type="text" maxlength="4"></label>
+                  <label class="field">External booking link <small>— HTTPS</small><input data-cfg="booking" type="url" placeholder="https://example.com/book"></label>
+                </div></div>
+              </section>
+              <section class="form-block">
+                <div class="block-aside"><span class="block-letter">B</span><h4>Base rates</h4><p>Every line item in your quote.</p></div>
+                <div class="block-inputs">
+                  <div class="rate-header"><span>CHARGE TYPE</span><span>AMOUNT</span></div>
+                  <div class="rate-grid">
+                    <label class="rate-line"><span>Minimum call-out</span><input data-cfg="minimum" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Bedroom</span><input data-cfg="bedroom" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Bathroom</span><input data-cfg="bathroom" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Floor / 100 sq ft</span><input data-cfg="per100" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Kitchen</span><input data-cfg="kitchen" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Living room</span><input data-cfg="living" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Inside oven</span><input data-cfg="oven" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Inside fridge</span><input data-cfg="fridge" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Inside windows</span><input data-cfg="windows" type="number" min="0" step="1"></label>
+                    <label class="rate-line"><span>Pet hair</span><input data-cfg="pets" type="number" min="0" step="1"></label>
+                  </div>
+                </div>
+              </section>
+              <details class="advanced">
+                <summary><span class="advanced-marker">C</span><span class="advanced-copy"><strong>Advanced calculation settings</strong><small>Job difficulty · Discounts · Tax · Crew costs</small></span><span class="advanced-toggle">OPEN +</span></summary>
+                <section class="form-block sub-block"><div class="block-aside"><h4>Fine-tuning</h4><p>Multipliers, frequency and costs.</p></div><div class="block-inputs"><div class="field-grid">
+                  <label class="field">Deep clean multiplier<input data-cfg="deep" type="number" min="1" max="8" step=".05"></label>
+                  <label class="field">Moving clean multiplier<input data-cfg="moving" type="number" min="1" max="8" step=".05"></label>
+                  <label class="field">Moderate condition multiplier<input data-cfg="moderate" type="number" min="1" max="8" step=".05"></label>
+                  <label class="field">Heavy condition multiplier<input data-cfg="heavy" type="number" min="1" max="8" step=".05"></label>
+                  <label class="field">Weekly discount (%)<input data-cfg="weekly" type="number" min="0" max="70" step="1"></label>
+                  <label class="field">Fortnightly discount (%)<input data-cfg="biweekly" type="number" min="0" max="70" step="1"></label>
+                  <label class="field">Monthly discount (%)<input data-cfg="monthly" type="number" min="0" max="70" step="1"></label>
+                  <label class="field">Estimate range (±%)<input data-cfg="variance" type="number" min="0" max="40" step="1"></label>
+                  <label class="field">Travel / setup fee<input data-cfg="travel" type="number" min="0" step="1"></label>
+                  <label class="field">Sales tax (%)<input data-cfg="tax" type="number" min="0" max="40" step=".5"></label>
+                  <label class="field">Labor cost / cleaner-hour<input data-cfg="labor" type="number" min="0" step="1"></label>
+                  <label class="field">Number of cleaners<input data-cfg="crew" type="number" min="1" max="20" step="1"></label>
+                </div></div></section>
+              </details>
+              <div class="action-area"><div><div class="tiny-label">PUBLISH YOUR SETUP</div><p>Copy the link whenever you change your pricing.</p></div><div class="action-stack"><button class="flat-button primary-button" type="button" id="shareBtn">COPY CUSTOMER LINK <span aria-hidden="true">↗</span></button><div class="utility-buttons"><button type="button" id="embedBtn">COPY EMBED CODE</button><button type="button" id="downloadBtn">EXPORT SETTINGS</button><button type="button" id="resetBtn">RESET</button></div></div></div>
+              <p class="feedback" id="studioStatus" role="status" aria-live="polite"></p>
+            </form>
+          </div>
         </div>
-        <div class="mobile-estimate" id="mobileEstimate"><div><small>LIVE ESTIMATE</small><strong id="mobilePrice">$0–$0</strong></div><button type="button" id="mobileSee">View quote <span aria-hidden="true">↑</span></button></div>
+        <aside class="receipt" id="resultCard" aria-labelledby="resultHeading">
+          <div class="receipt-top"><strong>MN/EST.</strong><span>LIVE QUOTE<br>NOT AN INVOICE</span></div>
+          <div class="receipt-meta"><span>PREPARED BY</span><span id="quoteBusiness">Your cleaning business</span></div>
+          <div class="receipt-intro"><div class="tiny-label">YOUR ESTIMATED PRICE</div><h3 id="resultHeading">Here is<br>the number.</h3></div>
+          <div class="receipt-price" id="price" aria-live="polite" aria-atomic="true">$126–$154</div>
+          <p id="visitCaption" class="receipt-sub">One-time · estimated price per visit</p>
+          <div class="receipt-line"></div>
+          <div class="estimate-row"><span>SERVICE</span><strong id="resultService">Standard cleaning</strong></div>
+          <div class="estimate-row"><span>INCLUDED AREAS</span><strong id="roomCount">2 bed · 1 bath</strong></div>
+          <div class="estimate-row"><span>CREW TIME</span><strong id="duration">3.2 h</strong></div>
+          <details class="breakdown"><summary>VIEW LINE ITEMS <span aria-hidden="true">＋</span></summary><div id="breakdown" class="breakdown-list"></div></details>
+          <div class="business-metrics" id="businessMetrics"><div class="tiny-label">STUDIO / PLANNING ONLY</div><div class="estimate-row"><span>EST. LABOR COST</span><strong id="laborCost">—</strong></div><div class="estimate-row"><span>AFTER LABOR*</span><strong id="remainder">—</strong></div><p>*Before tax and other business costs. Not net profit. Rate data is part of the shareable configuration and is not secret.</p></div>
+          <div class="receipt-actions"><button class="flat-button primary-button" id="sendBtn" type="button">ASK ABOUT AVAILABILITY <span aria-hidden="true">↗</span></button><a class="flat-button outline-button" href="#" id="bookBtn" target="_blank" rel="noopener noreferrer" hidden>OPEN BOOKING PAGE ↗</a><div class="receipt-tools"><button type="button" id="copyBtn">COPY DETAILS ↗</button><button type="button" id="printBtn">PRINT / PDF ↗</button></div></div>
+          <p id="disclaimer" class="receipt-fine">Indicative estimate only. Final price and availability are confirmed by the cleaner.</p>
+          <p id="quoteStatus" class="feedback" role="status" aria-live="polite"></p>
+          <div class="receipt-foot"><span>mopnote.</span><span>END OF ESTIMATE</span></div>
+        </aside>
       </div>
-    </section>
-
-    <section class="how shell" id="how">
-      <div class="how-head"><span class="section-label">02 / HOW IT WORKS</span><h2>Built for work.<br><em>Not more admin.</em></h2></div>
-      <div class="how-grid"><article><span class="how-num">01 — SET</span><div class="how-icon" aria-hidden="true">⌘</div><h3>Set your own numbers.</h3><p>Configure rooms, add-ons, minimums, repeat visits and tricky jobs.</p></article><article><span class="how-num">02 — SHARE</span><div class="how-icon" aria-hidden="true">↗</div><h3>Send one link.</h3><p>Customers get a clean, phone-friendly experience with your business name.</p></article><article><span class="how-num">03 — TALK</span><div class="how-icon" aria-hidden="true">✳</div><h3>Get a useful enquiry.</h3><p>Quotes open in WhatsApp with the job details. You confirm the final price.</p></article></div>
-    </section>
-    <section class="statement" id="why"><div class="shell statement-inner"><div><span class="section-label">03 / WHAT MATTERS</span><h2>A small link.<br>A lot less friction.</h2></div><div><p>Customers don't want a spreadsheet. Cleaners don't want to explain the same estimate twenty times. Mopnote makes the important details clear without pretending an estimate is a confirmed booking.</p><a href="#workspace" class="btn btn-lime" id="bottomAction">Make your quote page <span aria-hidden="true">↗</span></a></div></div></section>
-  </main>
-  <footer class="footer"><div class="shell footer-inner"><a href="./" class="logo">mopnote<span class="logo-stop">.</span></a><span>Built for clearer cleaning enquiries. No data collection by Mopnote.</span><a href="#home">Back to top ↑</a></div></footer>
-  <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("./sw.js").catch(function(){})})}</script>
+      <div class="mobile-estimate" id="mobileEstimate"><div><small>ESTIMATE</small><strong id="mobilePrice">$126–$154</strong></div><button type="button" id="mobileSee">VIEW DETAILS ↑</button></div>
+    </div>
+  </section>
+  <section class="closing frame" id="why">
+    <div><span class="closing-kicker">BUILT FOR THE ACTUAL JOB</span><h2>Stop quoting<br>from memory.</h2></div>
+    <div class="closing-right"><p>Decide your rates. Let clients describe their spaces. Receive one useful message instead of ten questions.</p><a class="flat-button outline-button" href="#workspace" id="bottomAction">OPEN THE QUOTE DESK ↗</a></div>
+  </section>
+</main>
+<footer class="site-footer"><div class="frame"><span>© MOPNOTE · QUOTE DESK</span><span>NO LOGIN. NO CUSTOMER DATABASE. NO CLAIMED BOOKINGS.</span><a href="#home">TOP ↑</a></div></footer>
+<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}</script>
 </body>
 </html>
