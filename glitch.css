@@ -1,0 +1,50 @@
+#glitchCanvas{
+  position:fixed;inset:0;
+  display:block;width:100%;height:100%;
+  pointer-events:none;
+  user-select:none;
+  z-index:0;
+  opacity:.9;
+  contain:strict;
+}
+html[data-theme=dark] #glitchCanvas{opacity:.7;mix-blend-mode:screen}
+body{isolation:isolate}
+body>.notice-line,body>.site-header,body>main,body>.site-footer{position:relative;z-index:1}
+.intro,.closing{position:relative}
+.workspace{background:color-mix(in srgb,var(--canvas) 88%,transparent)}
+.work-grid{background:color-mix(in srgb,var(--canvas) 97%,transparent)}
+.receipt{background:var(--input)}
+.glitch-toggle{
+  border:1px solid var(--ink);
+  border-left:0;
+  color:var(--ink);background:transparent;
+  min-height:48px;
+  padding:9px 15px;
+  display:inline-flex;gap:9px;align-items:center;justify-content:center;
+  font:800 10px/1.3 var(--mono);
+  white-space:nowrap;
+}
+.glitch-toggle:hover{color:var(--paper);background:var(--ink)}
+.glitch-indicator{display:inline-grid;place-items:center;color:var(--accent);font:800 16px/1 var(--mono);width:17px;height:17px}
+.glitch-toggle[aria-pressed="true"] .glitch-indicator{animation:glitch-indicator 4s steps(1,end) infinite}
+.glitch-toggle[aria-pressed="false"] .glitch-indicator{color:var(--softink)}
+.glitch-toggle:disabled{opacity:.65;cursor:default}
+@keyframes glitch-indicator{
+  0%,9%,11%,18%,20%,57%,59%,100%{transform:translateX(0)}
+  10%,58%{transform:translateX(2px)}
+  19%{transform:translateX(-2px)}
+}
+@media(max-width:610px){
+  .header-actions{gap:0}
+  .header-link{font-size:0;gap:0;min-width:38px;justify-content:center;padding:8px}
+  .header-link span{font-size:17px}
+  .glitch-toggle{min-height:38px;min-width:38px;padding:6px 8px;font-size:0}
+  .glitch-toggle #glitchLabel{display:none}
+  .glitch-indicator{font-size:17px}
+  .workspace{background:color-mix(in srgb,var(--canvas) 91%,transparent)}
+}
+@media(prefers-reduced-motion:reduce){
+  #glitchCanvas{display:none!important}
+  .glitch-indicator{animation:none!important}
+}
+@media print{#glitchCanvas,.glitch-toggle{display:none!important}}
