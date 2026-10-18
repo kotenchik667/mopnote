@@ -88,3 +88,8 @@ def test_commands_include_node_for_youtube(monkeypatch, tmp_path):
     command = server.video_command(tmp_path, "https://www.tiktok.com/@x/video/123", "audio")
     assert "--js-runtimes" not in command
     assert "--audio-format" in command
+
+def test_instaloader_only_for_public_post_patterns(tmp_path):
+    assert server.instaloader_command(tmp_path, "https://www.instagram.com/p/ABC123/")[-1] == "-ABC123"
+    assert server.instaloader_command(tmp_path, "https://www.instagram.com/reel/ABC123/")[-1] == "-ABC123"
+    assert server.instaloader_command(tmp_path, "https://www.instagram.com/private/abc/") is None
