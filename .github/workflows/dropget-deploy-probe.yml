@@ -1,0 +1,39 @@
+name: Probe DROP/GET deployment
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/dropget-deploy-probe.yml
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check live revision
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, urllib.request
+          from datetime import datetime, timezone
+          report={"time":datetime.now(timezone.utc).isoformat()}
+          try:
+              request=urllib.request.Request("https://dropget.onrender.com/api/health",headers={"User-Agent":"Dropget-HealthProbe"})
+              with urllib.request.urlopen(request,timeout=90) as response:
+                  report["http_status"]=response.status
+                  report["body"]=json.loads(response.read())
+          except Exception as exc:
+              report["error"]=str(exc)
+          open("dropget/deploy-probe.json","w").write(json.dumps(report,indent=2)+"\n")
+          print(report)
+          PY
+      - name: Save check
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dropget/deploy-probe.json
+          git commit -m "Record live DROP/GET health check" || true
+          git pull --rebase origin main
+          git push origin HEAD:main
