@@ -12,6 +12,10 @@ from collections import defaultdict, deque
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from urllib.parse import urlsplit
+from urllib.request import Request as URLRequest, urlopen
+from urllib.error import URLError
+import json
+import html
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse
@@ -87,43 +91,207 @@ def engine_ready(mode):
     return mode == "photos" or shutil.which("ffmpeg") is not None
 
 
+def files_in(folder):
+    return sorted((p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() in {
+        ".mp4", ".m4v", ".mov", ".webm", ".mkv", ".mp3", ".m4a",
+        ".jpg", ".jpeg", ".png", ".webp", ".avif"}), key=lambda p: p.name)
+
+
+def gallery_command(folder, url):
+    return [sys.executable, "-m", "gallery_dl", "--directory", str(folder),
+            "--range", "1-30", url]
+
+
+def video_command(folder, url, mode):
+    cmd = [sys.executable, "-m", "yt_dlp", "--ignore-config", "--no-playlist",
+           "--no-progress", "--no-warnings", "--restrict-filenames",
+           "--max-filesize", "200M", "--socket-timeout", "15", "--retries", "2",
+           "--fragment-retries", "2", "--no-mtime", "--paths", str(folder),
+           "-o", "%(title).70B-%(id)s.%(ext)s"]
+    host = (urlsplit(url).hostname or "").lower()
+    if host == "youtube.com" or host.endswith(".youtube.com") or host == "youtu.be":
+        if shutil.which("node"):
+            cmd += ["--js-runtimes", "node", "--remote-components", "ejs:npm"]
+    if mode == "audio":
+        cmd += ["-f", "bestaudio/best", "-x", "--audio-format", "mp3"]
+    else:
+        cmd += ["-f", "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/bv*+ba/b",
+                "--merge-output-format", "mp4"]
+    return cmd + [url]
+
+
+def execute(cmd):
+    return subprocess.run(cmd, cwd=str(ROOT), text=True, capture_output=True,
+                          timeout=185, check=False)
+
+
+def photo_sources(url):
+    response = urlopen(URLRequest(url, headers={
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml"}), timeout=18)
+    with response:
+        page = response.read(4_000_001)
+    if len(page) > 4_000_000:
+        raise ValueError("Страница слишком большая.")
+    page = page.decode("utf-8", "replace")
+    scripts = re.findall(r'<script[^>]+id=["\x27](?:__UNIVERSAL_DATA_FOR_REHYDRATION__|SIGI_STATE)["\x27][^>]*>(.*?)</script>', page, re.S)
+    for raw in scripts:
+        try:
+            tree = json.loads(html.unescape(raw))
+        except ValueError:
+            continue
+        stack = [tree]
+        while stack:
+            node = stack.pop()
+            if isinstance(node, list):
+                stack.extend(node[:100])
+            if not isinstance(node, dict):
+                continue
+            post = node.get("imagePost")
+            if isinstance(post, dict) and isinstance(post.get("images"), list):
+                result = []
+                for img in post["images"][:30]:
+                    if not isinstance(img, dict):
+                        continue
+                    sources = img.get("imageURL") or img.get("displayImage") or {}
+                    if isinstance(sources, dict):
+                        urls = sources.get("urlList") or []
+                        if isinstance(urls, list):
+                            result.append([u for u in urls if isinstance(u, str)][:4])
+                if result:
+                    return result
+            stack.extend(v for v in node.values() if isinstance(v, (dict, list)))
+    return []
+
+
+def trusted_image(url):
+    try:
+        part = urlsplit(url)
+        host = (part.hostname or "").lower().rstrip(".")
+        suffixes = (".tiktokcdn.com", ".tiktokcdn-us.com", ".byteimg.com",
+                    ".muscdn.com", ".tiktokv.com")
+        return part.scheme == "https" and not part.username and not part.password and not part.port and (
+            host in {s[1:] for s in suffixes} or host.endswith(suffixes))
+    except (ValueError, TypeError):
+        return False
+
+
+def tiktok_photos(folder, url):
+    try:
+        images = photo_sources(url)
+    except (ValueError, URLError, TimeoutError, OSError):
+        return False
+    if not images:
+        return False
+    for i, urls in enumerate(images, 1):
+        saved = False
+        for src in urls:
+            if not trusted_image(src):
+                continue
+            try:
+                with urlopen(URLRequest(src, headers={"User-Agent": "Mozilla/5.0",
+                        "Referer": "https://www.tiktok.com/"}), timeout=20) as response:
+                    if not trusted_image(response.url):
+                        continue
+                    data = response.read(8_000_001)
+                    kind = response.headers.get("Content-Type", "").lower()
+                if len(data) > 8_000_000 or not kind.startswith("image/"):
+                    continue
+                extension = ".png" if "png" in kind else ".webp" if "webp" in kind else ".jpg"
+                (folder / f"slide-{i:02d}{extension}").write_bytes(data)
+                saved = True
+                break
+            except (URLError, TimeoutError, OSError, ValueError):
+                pass
+        if not saved:
+            return False
+    return True
+
+
+def convert_gallery(folder, mode):
+    files = files_in(folder)
+    if mode == "photos":
+        return [p for p in files if p.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp", ".avif"}]
+    videos = [p for p in files if p.suffix.lower() in {".mp4", ".m4v", ".mov", ".webm", ".mkv"}]
+    if not videos:
+        return []
+    source = videos[0]
+    target = folder / ("result.mp3" if mode == "audio" else "result.mp4")
+    if mode == "audio":
+        cmd = ["ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "error", "-y",
+               "-i", str(source), "-vn", "-b:a", "192k", str(target)]
+    elif source.suffix.lower() == ".mp4":
+        return [source]
+    else:
+        cmd = ["ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "error", "-y",
+               "-i", str(source), "-map", "0:v:0", "-map", "0:a?",
+               "-c:v", "libx264", "-preset", "veryfast", "-c:a", "aac", str(target)]
+    output = subprocess.run(cmd, capture_output=True, timeout=115)
+    return [target] if output.returncode == 0 and target.is_file() else []
+
+
+def friendly_error(platform, details):
+    msg = details.lower()
+    if any(v in msg for v in ["sign in to confirm", "not a bot", "login page", "log in", "cookies", "authentication", "empty media response"]):
+        return f"{platform} ограничил доступ без входа или проверяет облачный сервер. Этот пост нельзя скачать отсюда без авторизации; логины и cookies мы не собираем."
+    if "404" in msg or "not found" in msg:
+        return "Публикация удалена, недоступна или ссылка устарела."
+    if "429" in msg or "rate limit" in msg:
+        return "Источник временно ограничил частоту запросов. Повторите позже."
+    return f"Не удалось получить медиа из {platform}. Проверьте доступность публичной ссылки."
+
+
 def run_job(job_id, url, mode):
     with LOCK:
         job = JOBS[job_id]
         job["state"] = "working"
     folder = job["folder"]
+    platform = job["platform"]
+    errors = []
+    output_files = []
     try:
         if mode == "photos":
-            cmd = [sys.executable, "-m", "gallery_dl", "--directory", str(folder),
-                   "--range", "1-30", url]
+            if platform == "TikTok":
+                direct = folder / "direct"
+                direct.mkdir()
+                if tiktok_photos(direct, url):
+                    output_files = files_in(direct)
+            if not output_files:
+                target = folder / "gallery"
+                target.mkdir()
+                result = execute(gallery_command(target, url))
+                output_files = convert_gallery(target, mode)
+                if not output_files:
+                    errors.append(result.stderr or result.stdout or "No images found")
         else:
-            cmd = [sys.executable, "-m", "yt_dlp", "--ignore-config", "--no-playlist",
-                   "--no-progress", "--no-warnings", "--restrict-filenames",
-                   "--max-filesize", "200M", "--socket-timeout", "15", "--retries", "2",
-                   "--fragment-retries", "2", "--no-mtime", "--paths", str(folder),
-                   "-o", "%(title).70B-%(id)s.%(ext)s"]
-            if mode == "audio":
-                cmd += ["-f", "bestaudio/best", "-x", "--audio-format", "mp3"]
-            else:
-                cmd += ["-f", "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/bv*+ba/b", "--merge-output-format", "mp4"]
-            cmd.append(url)
-        result = subprocess.run(cmd, cwd=str(ROOT), text=True, capture_output=True, timeout=210, check=False)
-        if result.returncode:
-            raise ValueError((result.stderr or result.stdout)[-350:] or "Источник отклонил запрос.")
-        files = sorted((p for p in folder.rglob("*") if p.is_file()), key=lambda p: p.name)
-        total = sum(p.stat().st_size for p in files)
-        if not files:
-            raise ValueError("Медиа не найдено. Возможно, источник требует вход или ограничивает доступ.")
+            target = folder / "primary"
+            target.mkdir()
+            result = execute(video_command(target, url, mode))
+            if result.returncode == 0:
+                output_files = [p for p in files_in(target)
+                                if p.suffix.lower() == (".mp3" if mode == "audio" else ".mp4")]
+            if not output_files:
+                errors.append(result.stderr or result.stdout or "No media")
+                if platform == "Instagram":
+                    target = folder / "gallery"
+                    target.mkdir()
+                    result = execute(gallery_command(target, url))
+                    output_files = convert_gallery(target, mode)
+                    if not output_files:
+                        errors.append(result.stderr or result.stdout or "No media")
+        if not output_files:
+            raise ValueError(friendly_error(platform, " ".join(errors)))
+        total = sum(p.stat().st_size for p in output_files)
         if total > MAX_BYTES:
-            raise ValueError("Файл превышает лимит 200 МБ.")
-        if len(files) > 1:
+            raise ValueError("Общий размер превышает 200 МБ.")
+        if len(output_files) > 1:
             bundle = folder / "download.zip"
             with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=4) as archive:
-                for index, file in enumerate(files, 1):
-                    archive.write(file, f"{index:02d}-{file.name}")
+                for index, path in enumerate(output_files, 1):
+                    archive.write(path, f"{index:02d}-{path.name}")
             output = bundle
         else:
-            output = files[0]
+            output = output_files[0]
         with LOCK:
             job.update(state="ready", filename=output.name, file=str(output), size=output.stat().st_size)
     except subprocess.TimeoutExpired:
@@ -131,7 +299,7 @@ def run_job(job_id, url, mode):
             job.update(state="error", error="Превышено время ожидания источника.")
     except Exception as exc:
         with LOCK:
-            job.update(state="error", error=str(exc)[-350:])
+            job.update(state="error", error=str(exc)[:350])
 
 
 @app.get("/", response_class=HTMLResponse)
