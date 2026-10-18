@@ -102,6 +102,15 @@ def gallery_command(folder, url):
             "--range", "1-30", url]
 
 
+def instaloader_command(folder, url):
+    match = re.fullmatch(r"/(?:p|reel|tv)/([a-zA-Z0-9_-]+)/?", urlsplit(url).path)
+    if not match:
+        return None
+    return [sys.executable, "-m", "instaloader", "--no-profile-pic",
+            "--no-metadata-json", "--dirname-pattern", str(folder),
+            "--", "-" + match.group(1)]
+
+
 def video_command(folder, url, mode):
     cmd = [sys.executable, "-m", "yt_dlp", "--ignore-config", "--no-playlist",
            "--no-progress", "--no-warnings", "--restrict-filenames",
@@ -263,6 +272,13 @@ def run_job(job_id, url, mode):
                 output_files = convert_gallery(target, mode)
                 if not output_files:
                     errors.append(result.stderr or result.stdout or "No images found")
+                    if platform == "Instagram":
+                        attempt = instaloader_command(folder / "instaloader", url)
+                        if attempt:
+                            result = execute(attempt)
+                            output_files = convert_gallery(folder / "instaloader", mode)
+                            if not output_files:
+                                errors.append(result.stderr or result.stdout or "No images")
         else:
             target = folder / "primary"
             target.mkdir()
@@ -279,6 +295,12 @@ def run_job(job_id, url, mode):
                     output_files = convert_gallery(target, mode)
                     if not output_files:
                         errors.append(result.stderr or result.stdout or "No media")
+                        attempt = instaloader_command(folder / "instaloader", url)
+                        if attempt:
+                            result = execute(attempt)
+                            output_files = convert_gallery(folder / "instaloader", mode)
+                            if not output_files:
+                                errors.append(result.stderr or result.stdout or "No media")
         if not output_files:
             raise ValueError(friendly_error(platform, " ".join(errors)))
         total = sum(p.stat().st_size for p in output_files)
