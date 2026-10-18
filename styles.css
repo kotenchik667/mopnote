@@ -177,3 +177,10 @@ h1,h2,h3{letter-spacing:-.04em}
 @media(max-width:370px){.nav-pill{font-size:10px}.hero h1{font-size:50px}.field-grid{grid-template-columns:1fr}.field.wide{grid-column:auto}.preview-total strong{font-size:26px}.floating-tag{font-size:8px}.result-card h3{font-size:34px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 @media print{@page{margin:16mm}body{background:#fff!important;color:#14291d!important}.topbar,.hero,.trust-strip,.tool-heading,.work-surface,.how,.statement,.footer,.mobile-estimate,.result-card .btn,.result-secondary,.result-disclaimer,.business-metrics,.feedback{display:none!important}.tool-area{background:transparent;padding:0}.shell{width:100%}.workspace-grid{display:block}.result-card{display:block!important;box-shadow:none;background:#fff;color:#14291d;border:2px solid #14291d;max-width:100%;position:static;top:auto}.result-card .result-led,.result-card .result-business,.result-card .pervisit,.result-card .estimate-row span,.result-card .breakdown summary,.result-card .result-num{color:#52665c}.result-divider{border-color:#ddd}.breakdown{display:block}.breakdown-list{background:#fff;color:#14291d}.breakdown-line span:first-child{color:#52665c}.result-top{margin-bottom:20px}.tool-area{padding:0}.amount{font-size:48px}}
+
+.customer-mode .hero,.customer-mode .trust-strip,.customer-mode .how,.customer-mode .statement{display:none}
+.customer-mode .tool-area{padding-top:48px;padding-bottom:75px}
+.customer-mode .tool-heading{margin-bottom:24px}
+.customer-mode .tool-heading h2{font-size:48px}
+.customer-mode .mode-switch{display:none}
+@media(max-width:600px){.customer-mode .tool-area{padding-top:35px;padding-bottom:100px}.customer-mode .tool-heading h2{font-size:39px}.customer-mode .tool-heading p{font-size:13px}}
