@@ -1,0 +1,42 @@
+{
+  "checked_at": "2026-10-18T15:18:32.947251+00:00",
+  "site": "https://dropget.onrender.com",
+  "cases": {
+    "tiktok_video": {
+      "mode": "video",
+      "test_url": "https://www.tiktok.com/@s_arira_s/video/7509275887561346350",
+      "result": "passed",
+      "id": "ff39d04f215f45d497f4b39b65c09375",
+      "filename": "new_song_do_you_like_new_era_of_me_underground_hyperpop_hypertra.-7509275887561346350.mp4",
+      "size": 2482371,
+      "download_status": 206,
+      "signature_valid": true,
+      "elapsed_seconds": 11.0
+    },
+    "tiktok_audio": {
+      "mode": "audio",
+      "test_url": "https://www.tiktok.com/@s_arira_s/video/7509275887561346350",
+      "result": "passed",
+      "id": "f2b308725ad141c59dd398e34c220a9f",
+      "filename": "new_song_do_you_like_new_era_of_me_underground_hyperpop_hypertra.-7509275887561346350.mp3",
+      "size": 646714,
+      "download_status": 206,
+      "signature_valid": true,
+      "elapsed_seconds": 10.7
+    },
+    "tiktok_photos": {
+      "mode": "photos",
+      "test_url": "https://www.tiktok.com/@imluca66/photo/7617926459105070358",
+      "result": "failed",
+      "id": "5c165224278b4b079514e9b4a5e3c9db",
+      "error": "Медиа не найдено. Возможно, источник требует вход или ограничивает доступ.",
+      "elapsed_seconds": 5.4
+    }
+  },
+  "health": {
+    "ok": true,
+    "video": true,
+    "audio": true,
+    "photos": true
+  }
+}
