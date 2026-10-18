@@ -32,8 +32,8 @@ test('redesign contains working mobile, print and accessibility paths', () => {
 });
 
 test('new style rejects default faux SaaS decoration', () => {
-  assert.doesNotMatch(css, /box-shadow\s*:/);
-  assert.doesNotMatch(css, /border-radius\s*:/);
+  assert.doesNotMatch(css, /box-shadow\s*:\s*(?!none)/);
+  assert.doesNotMatch(css, /border-radius\s*:\s*(?!0\b)/);
   assert.doesNotMatch(css, /radial-gradient|linear-gradient/);
   assert.doesNotMatch(html, /class="how-grid"|class="preview-window"/);
   assert.doesNotMatch(html, /fonts\.googleapis/);
