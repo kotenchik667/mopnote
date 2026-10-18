@@ -1,0 +1,34 @@
+Sun Oct 18 15:31:40 UTC 2026
+#10 5.396   Downloading websockets-17.2-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (225 kB)
+#10 5.397      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 225.0/225.0 kB 640.6 MB/s eta 0:00:00
+#10 5.421 Collecting yt-dlp-ejs==0.8.0
+#10 5.433   Downloading yt_dlp_ejs-0.8.0-py3-none-any.whl (53 kB)
+#10 5.434      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.4/53.4 kB 478.3 MB/s eta 0:00:00
+#10 5.649 Collecting charset_normalizer<4,>=2
+#10 5.662   Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (269 kB)
+#10 5.664      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 270.0/270.0 kB 609.7 MB/s eta 0:00:00
+#10 5.722 Collecting idna<4,>=2.5
+#10 5.734   Downloading idna-3.20-py3-none-any.whl (69 kB)
+#10 5.735      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.6/69.6 kB 517.4 MB/s eta 0:00:00
+#10 5.784 Collecting anyio<5,>=4.0.0
+#10 5.797   Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#10 5.798      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 132.1/132.1 kB 615.8 MB/s eta 0:00:00
+#10 5.978 Installing collected packages: brotli, yt-dlp-ejs, yt-dlp, websockets, urllib3, typing-extensions, pycryptodomex, mutagen, idna, h11, click, charset_normalizer, certifi, annotated-types, annotated-doc, uvicorn, typing-inspection, requests, pydantic-core, opentelemetry-api, anyio, starlette, pydantic, gallery-dl, fastapi
+#10 8.693 Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 brotli-1.2.0 certifi-2026.7.22 charset_normalizer-3.5.2 click-8.5.0 fastapi-0.146.0 gallery-dl-1.32.17 h11-0.16.0 idna-3.20 mutagen-1.48.1 opentelemetry-api-1.45.1 pycryptodomex-3.24.1 pydantic-2.14.1 pydantic-core-2.50.1 requests-2.34.2 starlette-1.8.0 typing-extensions-4.16.0 typing-inspection-0.4.4 urllib3-2.8.0 uvicorn-0.54.0 websockets-17.2 yt-dlp-2026.10.10.233141.dev0 yt-dlp-ejs-0.8.0
+#10 DONE 9.5s
+
+#11 [6/7] COPY server.py .
+#11 DONE 0.0s
+
+#12 [7/7] COPY static/ ./static/
+#12 DONE 0.0s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 1.6s done
+#13 writing image sha256:2afe58704bf6892b29325037868d0cb7e4ae335eabb5f153b530848c7fe66505 done
+#13 naming to docker.io/library/dropget:test done
+#13 DONE 1.6s
+2026.10.10.233141
+v22.23.3
+1.32.17
