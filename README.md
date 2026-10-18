@@ -78,3 +78,20 @@ Reddit threads that guided the design critique:
 - [Clear purpose and obvious next actions for service enquiries](https://www.reddit.com/r/webdesign/comments/1sx6plp/i_stopped_making_beautiful_websites/)
 
 These Reddit opinions are design references, not validation that real customers prefer this layout. Test with cleaners and customers before drawing conversion conclusions.
+
+
+## Continuous glitch background / October 2026
+
+Version 4 adds a persistent, independent canvas animation behind the editorial workbench: a fine registration grid, horizontal scan traces, red/ink pixel fragments, moving signal bands and small metadata glyphs. No external image, video or animation library is loaded. The estimator's inputs, sticky quote receipt, link codec and calculations are unchanged.
+
+The **GLITCH ON/OFF** button controls the animation, and saves the choice in the current browser. On mobile it is a compact icon button with an accessible label. It runs at a deliberately limited frame rate, uses fewer fragments on small screens, stops when the tab is hidden, and automatically disables motion when the system requests reduced motion. It cannot capture clicks (pointer-events:none) and is hidden when printing. The cached offline shell includes both new files, under its new v4 cache key.
+
+Only these **Reddit discussions** were consulted for the treatment:
+- [Pixelated/glitch effect: comments identifying an HTML canvas approach](https://www.reddit.com/r/css/comments/14xncvz/)
+- [Scanline pseudo-element CSS technique](https://www.reddit.com/r/css/comments/wcp7au/)
+- [Canvas used for glitchy pixel art](https://www.reddit.com/r/creativecoding/comments/1esrzgn/)
+- [Performance pitfalls from excessive website animation](https://www.reddit.com/r/web_design/comments/1sfpvjo/)
+- [Keeping animations out of the user's way](https://www.reddit.com/r/web_design/comments/1wcj9yw/)
+- [Accessibility trade-offs in homepage motion](https://www.reddit.com/r/web_design/comments/13b8o08/)
+
+The effect is an aesthetic feature, not a claim of higher conversion. Test it on real devices before deciding on its default intensity.
