@@ -119,7 +119,8 @@
   }
   function encodeConfig(raw) {
     const c = normalizeConfig(raw);
-    const json = JSON.stringify({ v: 2, config: c });
+    const { labor, ...publicConfig } = c;
+    const json = JSON.stringify({ v: 2, config: publicConfig });
     const bytes = new TextEncoder().encode(json);
     let binary = '';
     for (const byte of bytes) binary += String.fromCharCode(byte);
