@@ -1,12 +1,12 @@
 {
-  "name": "Mopnote — Cleaning Quote Studio",
+  "name": "Mopnote — The Cleaning Quote Desk",
   "short_name": "Mopnote",
-  "description": "Instant cleaning estimates with your prices",
+  "description": "A practical cleaning quote desk for your own rates",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f8f7f2",
-  "theme_color": "#17392e",
+  "background_color": "#e9e7e1",
+  "theme_color": "#e9e7e1",
   "icons": [
     {
       "src": "./icon.svg",
