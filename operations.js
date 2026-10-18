@@ -21,6 +21,9 @@
     const estimate = collect();
     const m = R.model(estimate, settings);
     const money = n => E.money(n, estimate.config.currency);
+    const signed = n => (n < 0 ? '−' : '') + money(Math.abs(n));
+    $('laborCost').textContent = money(m.variableLabor);
+    $('remainder').textContent = signed(m.contribution);
     $('opsMargin').textContent = m.margin.toFixed(1) + '%';
     $('opsTarget').textContent = m.targetPrice === null ? 'UNATTAINABLE' : money(m.targetPrice);
     $('opsP90').textContent = m.scenarioHours.toFixed(1) + ' labor-hours';
