@@ -3,6 +3,7 @@ services:
     name: dropget
     runtime: docker
     plan: free
+    autoDeploy: true
     dockerContext: ./dropget
     dockerfilePath: ./dropget/Dockerfile
     healthCheckPath: /api/health
