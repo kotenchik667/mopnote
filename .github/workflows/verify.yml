@@ -13,5 +13,6 @@ jobs:
           node-version: 22
       - run: node --check engine.js
       - run: node --check app.js
+      - run: node --check glitch.js
       - run: node --check sw.js
       - run: node --test tests/*.test.cjs
