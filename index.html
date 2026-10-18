@@ -10,11 +10,15 @@
   <title>Mopnote — The cleaning quote desk</title>
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="stylesheet" href="./styles.css?v=4">
-  <link rel="stylesheet" href="./glitch.css?v=4">
-  <script src="./engine.js?v=3" defer></script>
-  <script src="./app.js?v=3" defer></script>
-  <script src="./glitch.js?v=4" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=5">
+  <link rel="stylesheet" href="./glitch.css?v=5">
+  <link rel="stylesheet" href="./operations.css?v=5">
+  <script src="./engine.js?v=5" defer></script>
+  <script src="./risk.js?v=5" defer></script>
+  <script src="./guidance.js?v=5" defer></script>
+  <script src="./app.js?v=5" defer></script>
+  <script src="./operations.js?v=5" defer></script>
+  <script src="./glitch.js?v=5" defer></script>
 </head>
 <body>
 <canvas id="glitchCanvas" aria-hidden="true"></canvas>
@@ -26,17 +30,17 @@
     <div class="header-descriptor">ESTIMATE<br>WORKSTATION</div>
     <div class="header-actions">
       <a href="#workspace" id="navAction" class="header-link">OPEN THE DESK <span aria-hidden="true">↗</span></a>
-      <button type="button" id="glitchToggle" class="glitch-toggle" aria-label="Pause background glitch animation" aria-pressed="true"><span class="glitch-indicator" aria-hidden="true">▤</span><span id="glitchLabel">GLITCH ON</span></button>
+      
       <button type="button" id="themeToggle" class="theme-button" aria-label="Switch to dark mode" aria-pressed="false"><span aria-hidden="true">◐</span><span class="theme-text">DISPLAY</span></button>
     </div>
   </div>
 </header>
 <main>
   <section class="intro frame">
-    <div class="intro-main"><div class="eyeline"><span class="index-mark"></span> THE QUOTE DESK / MOPNOTE V3</div>
+    <div class="intro-main"><div class="eyeline"><span class="index-mark"></span> THE QUOTE DESK / MOPNOTE V5</div>
       <h1>Know the job.<br><span>Know the price.</span></h1>
     </div>
-    <div class="intro-aside"><span class="intro-number">M/N—01</span><p>No chasing down details. No mystery pricing. Your own estimate sheet, ready to share in a minute.</p>
+    <div class="intro-aside"><span class="intro-number">M/N—01</span><p>Your own pricing. A measured estimate. A clear contact step. No account needed.</p>
       <div class="intro-buttons"><a href="#workspace" id="heroAction" class="flat-button primary-button">SET UP YOUR PRICES <span aria-hidden="true">↗</span></a><button type="button" id="demoAction" class="under-button">PREVIEW AS CUSTOMER →</button></div>
       <span class="visually-hidden" id="heroPrice"></span>
     </div>
@@ -144,8 +148,38 @@
                   <label class="field">Number of cleaners<input data-cfg="crew" type="number" min="1" max="20" step="1"></label>
                 </div></div></section>
               </details>
+              <section class="operations-panel" id="operationsPanel" aria-labelledby="opsHeading">
+                <div class="ops-header"><div class="tiny-label">D / PRIVATE OPERATIONS DESK</div><h4 id="opsHeading">Can this job actually make money?</h4><p>Costs stay on this device, not in the customer link. Check labor uncertainty, target margin and crew capacity before sending an estimate.</p></div>
+                <div class="ops-fields">
+                  <label class="field">Loaded wage / labor-hour <input data-risk="loadedWage" type="number" min="0" step="0.5"></label>
+                  <label class="field">Supplies per job <input data-risk="supplies" type="number" min="0" step="0.5"></label>
+                  <label class="field">Allocated overhead per job <input data-risk="overhead" type="number" min="0" step="0.5"></label>
+                  <label class="field">Travel cost per job <input data-risk="travelCost" type="number" min="0" step="0.5"></label>
+                  <label class="field">Payment fee (%) <input data-risk="paymentPct" type="number" min="0" max="80" step="0.1"></label>
+                  <label class="field">Target margin (%) <input data-risk="targetMargin" type="number" min="0" max="80" step="1"></label>
+                  <label class="field">Labor-time variation (%) <input data-risk="timeCV" type="number" min="0" max="80" step="1"></label>
+                  <label class="field">Jobs per week <input data-risk="weeklyJobs" type="number" min="0" max="300" step="1"></label>
+                  <label class="field full">Available crew-hours per week <input data-risk="availableHours" type="number" min="1" max="168" step="1"></label>
+                </div>
+                <div class="ops-results" aria-live="polite">
+                  <div><span>MODELED CONTRIBUTION MARGIN</span><strong id="opsMargin">—</strong></div>
+                  <div><span>PRICE FOR TARGET MARGIN</span><strong id="opsTarget">—</strong></div>
+                  <div><span>90TH-PERCENTILE LABOR SCENARIO</span><strong id="opsP90">—</strong></div>
+                  <div><span>CHANCE OF COVERING MODELED COSTS</span><strong id="opsCover">—</strong></div>
+                  <div><span>CREW UTILIZATION</span><strong id="opsUtil">—</strong></div>
+                  <div><span>QUEUE DELAY / AVAILABLE WORK-HOURS</span><strong id="opsQueue">—</strong></div>
+                  <div><span>+1 WAGE UNIT / TARGET PRICE</span><strong id="opsDerivative">—</strong></div>
+                </div>
+                <p class="ops-warning" id="opsWarning" role="status"></p>
+                <p class="ops-foot">Models assume normally varying job duration and a single team with random arrivals; estimates depend on your inputs. Queue time is measured in available team-hours, not calendar hours. Not financial advice or a guaranteed price.</p>
+                <div class="guidance-panel"><div class="tiny-label">REDDIT-BASED KNOWLEDGE SEARCH / OFFLINE</div><h4>Why this quote?</h4><p>Search practical cleaning-pricing discussions. Ranked retrieval with source links; no AI model or fabricated answers.</p>
+                  <form id="guideForm" class="guide-form"><label class="field" for="guideQuery">Ask a pricing question<input id="guideQuery" type="search" maxlength="160" placeholder="e.g. how do I count labor and travel?"></label><button type="submit" class="flat-button outline-button">FIND SOURCES ↗</button></form>
+                  <div id="guideResults" class="guide-results" role="status" aria-live="polite"></div>
+                </div>
+              </section>
               <div class="action-area"><div><div class="tiny-label">PUBLISH YOUR SETUP</div><p>Copy the link whenever you change your pricing.</p></div><div class="action-stack"><button class="flat-button primary-button" type="button" id="shareBtn">COPY CUSTOMER LINK <span aria-hidden="true">↗</span></button><div class="utility-buttons"><button type="button" id="embedBtn">COPY EMBED CODE</button><button type="button" id="downloadBtn">EXPORT SETTINGS</button><button type="button" id="resetBtn">RESET</button></div></div></div>
               <p class="feedback" id="studioStatus" role="status" aria-live="polite"></p>
+              <p id="setupReadiness" class="setup-readiness" role="status"></p>
             </form>
           </div>
         </div>
@@ -160,7 +194,7 @@
           <div class="estimate-row"><span>INCLUDED AREAS</span><strong id="roomCount">2 bed · 1 bath</strong></div>
           <div class="estimate-row"><span>CREW TIME</span><strong id="duration">3.2 h</strong></div>
           <details class="breakdown"><summary>VIEW LINE ITEMS <span aria-hidden="true">＋</span></summary><div id="breakdown" class="breakdown-list"></div></details>
-          <div class="business-metrics" id="businessMetrics"><div class="tiny-label">STUDIO / PLANNING ONLY</div><div class="estimate-row"><span>EST. LABOR COST</span><strong id="laborCost">—</strong></div><div class="estimate-row"><span>AFTER LABOR*</span><strong id="remainder">—</strong></div><p>*Before tax and other business costs. Not net profit. Rate data is part of the shareable configuration and is not secret.</p></div>
+          <div class="business-metrics" id="businessMetrics"><div class="tiny-label">STUDIO / PLANNING ONLY</div><div class="estimate-row"><span>EST. LABOR COST</span><strong id="laborCost">—</strong></div><div class="estimate-row"><span>AFTER LABOR*</span><strong id="remainder">—</strong></div><p>*Labor-only estimate. Use the operations desk for supplies, overhead, payment fees and uncertainty. Internal labor rate is not included in new customer links.</p></div>
           <div class="receipt-actions"><button class="flat-button primary-button" id="sendBtn" type="button">ASK ABOUT AVAILABILITY <span aria-hidden="true">↗</span></button><a class="flat-button outline-button" href="#" id="bookBtn" target="_blank" rel="noopener noreferrer" hidden>OPEN BOOKING PAGE ↗</a><div class="receipt-tools"><button type="button" id="copyBtn">COPY DETAILS ↗</button><button type="button" id="printBtn">PRINT / PDF ↗</button></div></div>
           <p id="disclaimer" class="receipt-fine">Indicative estimate only. Final price and availability are confirmed by the cleaner.</p>
           <p id="quoteStatus" class="feedback" role="status" aria-live="polite"></p>
