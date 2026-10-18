@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: dropget
+    runtime: docker
+    plan: free
+    dockerContext: ./dropget
+    dockerfilePath: ./dropget/Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: MAX_REQUESTS_PER_HOUR
+        value: "6"
