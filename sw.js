@@ -1,4 +1,4 @@
-const CACHE = 'mopnote-v2';
+const CACHE = 'mopnote-v3-editorial';
 const FILES = ['./', './index.html', './styles.css', './app.js', './engine.js', './icon.svg', './manifest.webmanifest'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)).then(() => self.skipWaiting()));
@@ -12,5 +12,5 @@ self.addEventListener('fetch', event => {
     event.respondWith(fetch(event.request).catch(() => caches.match('./index.html')));
     return;
   }
-  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
+  event.respondWith(caches.match(event.request, { ignoreSearch: true }).then(cached => cached || fetch(event.request)));
 });
