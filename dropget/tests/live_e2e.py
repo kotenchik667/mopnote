@@ -6,6 +6,9 @@ from datetime import datetime, timezone
 
 BASE = "https://dropget.onrender.com"
 CASES = [
+    ("tiktok_video", "video", "https://www.tiktok.com/@s_arira_s/video/7509275887561346350"),
+    ("tiktok_audio", "audio", "https://www.tiktok.com/@s_arira_s/video/7509275887561346350"),
+    ("tiktok_photos", "photos", "https://www.tiktok.com/@imluca66/photo/7617926459105070358"),
     ("youtube_video", "video", "https://www.youtube.com/shorts/hDs3lKzpTto"),
     ("instagram_video", "video", "https://www.instagram.com/reel/DZzPabEJ8Pf/"),
     ("instagram_photos", "photos", "https://www.instagram.com/p/DV_k-0SiCdr/"),
@@ -40,13 +43,23 @@ def verify_file(job_id, mode):
 
 from pathlib import Path
 report_file = Path("dropget/live-test-report.json")
-report = json.loads(report_file.read_text()) if report_file.exists() else {"site": BASE, "cases": {}}
-report["checked_at"] = datetime.now(timezone.utc).isoformat()
-report["site"] = BASE
-try:
-    report["health"] = call("/api/health")
-except Exception as exc:
-    report["health_error"] = str(exc)
+report = {"site": BASE, "checked_at": datetime.now(timezone.utc).isoformat(), "cases": {}}
+ready = False
+for attempt in range(55):
+    try:
+        h = call("/api/health")
+        if h.get("revision") == "r2-20261018":
+            report["health"] = h
+            ready = True
+            break
+    except Exception as exc:
+        report["health_error"] = str(exc)
+    time.sleep(10)
+if not ready:
+    report["deploy_error"] = "Live server did not expose revision r2-20261018 before test timeout"
+    report_file.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\\n")
+    print(json.dumps(report), flush=True)
+    raise SystemExit(1)
 for name, mode, url in CASES:
     entry = {"mode": mode, "test_url": url, "result": "failed"}
     start = time.monotonic()
