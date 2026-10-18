@@ -1,0 +1,34 @@
+name: Build DROP/GET Docker
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/dropget-container.yml
+      - dropget/Dockerfile
+      - dropget/requirements.txt
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build production Docker image
+        run: |
+          docker build -f dropget/Dockerfile -t dropget:test dropget 2>&1 | tee /tmp/dropget-build.log
+          docker run --rm --entrypoint sh dropget:test -c 'python -m yt_dlp --version && node --version && python -m gallery_dl --version' 2>&1 | tee /tmp/dropget-runtime.log
+      - name: Record Docker verification
+        if: always()
+        run: |
+          {
+            date -u
+            tail -30 /tmp/dropget-build.log 2>/dev/null || true
+            cat /tmp/dropget-runtime.log 2>/dev/null || true
+          } > dropget/container-build-result.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dropget/container-build-result.txt
+          git commit -m "Record DROP/GET container verification" || true
+          git pull --rebase origin main
+          git push origin HEAD:main
