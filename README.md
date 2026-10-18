@@ -61,3 +61,20 @@ Decisions were informed by community anecdotes, not verified universal best prac
 - [First paying customers: specific pain and active conversations](https://www.reddit.com/r/micro_saas/comments/1u2wuct/how_did_you_get_your_first_paying_customers_for/)
 
 Licensed imagery and external paid dependencies: none. The optional font request to Google Fonts falls back to installed fonts when unavailable.
+
+
+## Visual redesign — Reddit research, 2026-10-18
+
+The third-generation interface deliberately changes the *product layout* rather than simply recoloring it. The page now opens with a plain editorial statement, and the application becomes an actual ruled workbench: editable line-item rates on one side and a receipt-like live estimate on the other. Mobile keeps the same information architecture in one column, with a persistent price bar. Input labels are explicit and readable. There are no glass panels, floating preview cards, generic three-step grid, rounded UI, stock photos or artificial customer statistics.
+
+Reddit threads that guided the design critique:
+
+- [Preventing the AI slop look: purposeful design, overused cards and template structure](https://www.reddit.com/r/webdesign/comments/1uhuovu/preventing_the_ai_slop_look/)
+- [AI-generated UI and misplaced visual polish](https://www.reddit.com/r/UXDesign/comments/1tvt03p/aigenerated_ui_proves_people_value_design_but_not/)
+- [Most AI-made looking sites: numbered sections and scrolling banners](https://www.reddit.com/r/webdesign/comments/1wkj84c/most_aimade_looking_websites/)
+- [A beginner guide to systematic spacing](https://www.reddit.com/r/web_design/comments/1i46mu3/my_biggest_tip_for_beginners/)
+- [Form labels versus placeholders](https://www.reddit.com/r/UXDesign/comments/196t2cu)
+- [Less decorative design, more operational density](https://www.reddit.com/r/UXDesign/comments/1wq9xi6/our_users_kept_asking_us_to_make_the_design_worse/)
+- [Clear purpose and obvious next actions for service enquiries](https://www.reddit.com/r/webdesign/comments/1sx6plp/i_stopped_making_beautiful_websites/)
+
+These Reddit opinions are design references, not validation that real customers prefer this layout. Test with cleaners and customers before drawing conversion conclusions.
