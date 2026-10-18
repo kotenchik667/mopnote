@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f4ed">
+  <meta name="description" content="Загрузчик разрешённых видео, MP3 и фото из TikTok, YouTube и Instagram.">
+  <title>DROP/GET — медиа без лишнего</title>
+  <link rel="stylesheet" href="./static/site.css">
+</head>
+<body>
+  <div class="marquee" aria-hidden="true"><span>DROP / GET · VIDEO · AUDIO · PHOTOS · DROP / GET · VIDEO · AUDIO · PHOTOS · DROP / GET · VIDEO · AUDIO · PHOTOS ·</span></div>
+  <div class="layout">
+    <header class="topbar">
+      <a class="logo" href="./" aria-label="DROP/GET домой">DROP<span>/</span>GET<span class="star">✳</span></a>
+      <div class="topright"><span class="live-dot"></span><span>MEDIA UTILITY</span><span class="slash">/</span><span>V.01</span></div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span>01 / ONLINE MEDIA TOOL</span><span>NO LOGIN. SIMPLE FLOW.</span></div>
+        <h1>ВСТАВЬ<br><em>ССЫЛКУ</em><span class="period">.</span></h1>
+        <p class="lead">Видео, звук и фотографии. TikTok / YouTube / Instagram. Одна ссылка — один понятный процесс.</p>
+      </section>
+      <section class="tool" id="tool" aria-label="Загрузка медиа">
+        <div class="tool-heading"><span>DOWNLOAD STATION</span><span>№ 001 — FREE TOOL</span></div>
+        <div class="platforms" role="group" aria-label="Поддерживаемые сайты">
+          <span><b class="platform-icon">T</b> TIKTOK</span>
+          <span><b class="platform-icon">▶</b> YOUTUBE</span>
+          <span><b class="platform-icon">◎</b> INSTAGRAM</span>
+        </div>
+        <form id="jobForm">
+          <label class="field-label" for="mediaUrl">01 / ССЫЛКА НА ПОСТ ИЛИ ВИДЕО</label>
+          <div class="urlrow"><input id="mediaUrl" type="url" name="url" placeholder="https://www.tiktok.com/@..." autocomplete="url" spellcheck="false" required><button id="pasteBtn" type="button">ВСТАВИТЬ ↗</button></div>
+          <div class="mode-head"><span>02 / ЧТО СОХРАНИТЬ?</span><span>ВЫБЕРИ ФОРМАТ</span></div>
+          <div class="formats" role="radiogroup" aria-label="Формат файла">
+            <label class="format"><input type="radio" name="mode" value="video" checked><span class="mode-title"><b>01</b><strong>ВИДЕО</strong></span><small>MP4 / ORIGINAL</small><span class="mode-check">↗</span></label>
+            <label class="format"><input type="radio" name="mode" value="audio"><span class="mode-title"><b>02</b><strong>МУЗЫКА</strong></span><small>MP3 / AUDIO</small><span class="mode-check">↗</span></label>
+            <label class="format"><input type="radio" name="mode" value="photos"><span class="mode-title"><b>03</b><strong>ФОТО</strong></span><small>JPG / ZIP</small><span class="mode-check">↗</span></label>
+          </div>
+          <button class="submit" id="submitBtn" type="submit"><span>ЗАГРУЗИТЬ ФАЙЛ</span><span class="arrow">↗</span></button>
+        </form>
+        <div id="statusArea" class="status" role="status" aria-live="polite" hidden>
+          <div class="status-top"><span id="statusLabel">ПРОВЕРКА ССЫЛКИ</span><span id="statusSymbol" class="spin">✳</span></div>
+          <p id="statusText">Подготовка...</p>
+          <div class="track"><span id="progressTrack"></span></div>
+          <a class="downloadlink" id="downloadLink" hidden>СКАЧАТЬ ГОТОВЫЙ ФАЙЛ ↗</a>
+        </div>
+        <div class="note"><span class="note-mark">!</span><p>Только свой контент или материалы, которые разрешено сохранять. Приватные публикации и материалы с ограниченным доступом не поддерживаются.</p></div>
+      </section>
+      <aside class="ad" id="advert"><span class="ad-tag">ADVERTISEMENT / 001</span><div id="adContainer"><strong>ЗДЕСЬ МОЖЕТ БЫТЬ<br>ВАША РЕКЛАМА.</strong><span>СЛОТ ПОД МОНЕТИЗАЦИЮ · БЕЗ POP-UP</span></div></aside>
+      <section class="info" aria-label="Информация о сервисе"><div><span class="number">01</span><h2>НЕ НУЖЕН АККАУНТ</h2><p>Вставляешь публичную ссылку. Логины и пароли не запрашиваются.</p></div><div><span class="number">02</span><h2>ВЫБИРАЕШЬ ТИП</h2><p>Видео в MP4, аудиодорожка в MP3 или фотографии в архиве.</p></div><div><span class="number">03</span><h2>ФАЙЛ У ТЕБЯ</h2><p>Подготовленные файлы удаляются с сервера после 20 минут.</p></div></section>
+      <footer><span>DROP/GET © 2026</span><span>MADE FOR THE FILE, NOT THE FEED.</span><a href="#tool">НАВЕРХ ↑</a></footer>
+    </main>
+  </div>
+  <script src="./static/app.js" defer></script>
+</body>
+</html>
+
