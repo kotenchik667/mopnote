@@ -1,4 +1,4 @@
-name: Probe DROP/GET deployment
+name: Probe DROP/GET deployment r2
 on:
   workflow_dispatch:
   push:
