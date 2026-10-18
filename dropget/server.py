@@ -309,7 +309,7 @@ def home():
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "video": engine_ready("video"),
+    return {"ok": True, "revision": "r2-20261018", "node": bool(shutil.which("node")), "video": engine_ready("video"),
             "audio": engine_ready("audio"), "photos": engine_ready("photos")}
 
 
