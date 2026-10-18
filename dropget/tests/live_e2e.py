@@ -29,9 +29,9 @@ def verify_file(job_id, mode):
             if mode == "video":
                 valid = blob[4:8] == b"ftyp"
             elif mode == "audio":
-                valid = blob.startswith(b"ID3") or blob[:1] == b"\\xff"
+                valid = blob.startswith(b"ID3") or blob[:1] == bytes([255])
             else:
-                valid = blob.startswith((b"PK\\x03\\x04", b"\\xff\\xd8\\xff", b"\\x89PNG", b"RIFF"))
+                valid = blob.startswith((bytes([80,75,3,4]), bytes([255,216,255]), bytes([137,80,78,71]), b"RIFF"))
             if not valid:
                 raise RuntimeError(f"Unexpected {mode} file signature: {blob[:12].hex()}")
             return {"download_status": resp.status, "signature_valid": True}
