@@ -45,7 +45,7 @@ from pathlib import Path
 report_file = Path("dropget/live-test-report.json")
 report = {"site": BASE, "checked_at": datetime.now(timezone.utc).isoformat(), "cases": {}}
 ready = False
-for attempt in range(55):
+for attempt in range(13):
     try:
         h = call("/api/health")
         if h.get("revision") == "r2-20261018":
@@ -57,7 +57,7 @@ for attempt in range(55):
     time.sleep(10)
 if not ready:
     report["deploy_error"] = "Live server did not expose revision r2-20261018 before test timeout"
-    report_file.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\\n")
+    report_file.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
     print(json.dumps(report), flush=True)
     raise SystemExit(1)
 for name, mode, url in CASES:
