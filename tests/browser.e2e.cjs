@@ -1,0 +1,89 @@
+const assert = require('node:assert/strict');
+const { chromium } = require('playwright');
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const root = process.cwd();
+const mime = {'.html':'text/html','.css':'text/css','.js':'application/javascript','.svg':'image/svg+xml','.webmanifest':'application/manifest+json'};
+const server = http.createServer((req,res) => {
+  const name = decodeURIComponent(new URL(req.url,'http://localhost').pathname);
+  const file = path.resolve(root, '.' + (name === '/' ? '/index.html' : name));
+  if (!file.startsWith(root + path.sep)) {res.writeHead(403).end();return;}
+  fs.readFile(file,(err,data)=>{
+    if(err){res.writeHead(404).end('Not found');return;}
+    res.writeHead(200,{'content-type':(mime[path.extname(file)]||'application/octet-stream')+'; charset=utf-8','cache-control':'no-store'});
+    res.end(data);
+  });
+});
+const screenshotDir = path.resolve('test-artifacts');
+fs.mkdirSync(screenshotDir,{recursive:true});
+(async()=>{
+  await new Promise(resolve=>server.listen(4173,'127.0.0.1',resolve));
+  const browser = await chromium.launch({headless:true,args:['--no-sandbox']});
+  try {
+    const context = await browser.newContext({viewport:{width:1365,height:900},permissions:['clipboard-read','clipboard-write']});
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror',error=>errors.push(error.message));
+    await page.goto('http://127.0.0.1:4173/');
+    await page.waitForSelector('#studioPanel:not([hidden])');
+    await page.waitForFunction(()=>document.getElementById('opsMargin').textContent!=='—');
+    assert.equal(await page.locator('#glitchToggle').count(),0);
+    assert.equal(await page.locator('#glitchCanvas').count(),1);
+    assert.ok(await page.locator('#opsMargin').textContent());
+    const initial = await page.locator('#price').textContent();
+    await page.locator('[data-cfg="bedroom"]').fill('89');
+    await page.waitForTimeout(80);
+    assert.notEqual(await page.locator('#price').textContent(),initial);
+    await page.locator('#shareBtn').click();
+    assert.match(await page.locator('#studioStatus').textContent(),/Add a valid WhatsApp/);
+    await page.locator('[data-cfg="business"]').fill('Test Crew');
+    await page.locator('[data-cfg="phone"]').fill('15551234567');
+    await page.locator('#shareBtn').click();
+    assert.match(await page.locator('#studioStatus').textContent(),/Customer link copied/);
+    const link = await page.evaluate(()=>navigator.clipboard.readText());
+    assert.match(link,/^http:\/\/127\.0\.0\.1:4173\/#p=/);
+    assert.equal(await page.evaluate(()=>window.MopnoteEngine.decodeConfig(location.hash.slice(3)).phone).catch(()=>null),null);
+    await page.screenshot({path:path.join(screenshotDir,'desktop-studio.png'),fullPage:true,animations:'disabled'});
+    await page.locator('#guideQuery').fill('How do I price labor, travel and supplies?');
+    await page.locator('#guideForm button').click();
+    assert.ok(await page.locator('.guide-result').count()>0);
+    assert.match(await page.locator('.guide-result a').first().getAttribute('href'),/^https:\/\/www\.reddit\.com/);
+    const customer = await context.newPage();
+    customer.on('pageerror',error=>errors.push(error.message));
+    await customer.goto(link);
+    await customer.waitForSelector('body.customer-mode');
+    assert.equal(await customer.locator('#studioTab').isVisible(),false);
+    assert.equal(await customer.locator('#studioPanel').isVisible(),false);
+    assert.equal(await customer.locator('#businessMetrics').isVisible(),false);
+    assert.equal(await customer.locator('#sendBtn').isEnabled(),true);
+    const oldValue=await customer.locator('#price').textContent();
+    await customer.locator('#beds').fill('6');
+    assert.notEqual(await customer.locator('#price').textContent(),oldValue);
+    await customer.evaluate(()=>{window.open=url=>{window.__whatsapp=url;return {};};});
+    await customer.locator('#sendBtn').click();
+    const outgoing=await customer.evaluate(()=>window.__whatsapp);
+    assert.match(outgoing,/wa\.me\/15551234567/);
+    assert.match(decodeURIComponent(outgoing),/Bedrooms: 6/);
+    await customer.screenshot({path:path.join(screenshotDir,'desktop-customer.png'),fullPage:true,animations:'disabled'});
+    const mobile = await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+    const mpage = await mobile.newPage();
+    mpage.on('pageerror',error=>errors.push(error.message));
+    await mpage.goto('http://127.0.0.1:4173/');
+    const dims=await mpage.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth}));
+    assert.ok(dims.scroll<=dims.width+1,'mobile horizontal overflow: '+JSON.stringify(dims));
+    assert.equal(await mpage.locator('#mobileEstimate').isVisible(),true);
+    await mpage.locator('#mobileSee').click();
+    await mpage.screenshot({path:path.join(screenshotDir,'mobile-studio.png'),fullPage:true,animations:'disabled'});
+    await mpage.emulateMedia({reducedMotion:'reduce'});
+    assert.equal(await mpage.locator('#glitchCanvas').evaluate(el=>getComputedStyle(el).display),'none');
+    assert.deepEqual(errors,[]);
+    console.log('PASS browser smoke: desktop, mobile, revenue model, Reddit evidence, links, WhatsApp, reduced motion');
+    await mobile.close();
+    await context.close();
+  } finally {
+    await browser.close();
+    await new Promise(resolve=>server.close(resolve));
+  }
+})().catch(error=>{console.error(error);server.close();process.exitCode=1;});
